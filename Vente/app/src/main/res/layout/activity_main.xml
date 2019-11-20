@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout
+    android:id="@+id/activity_main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="40dp"
+        tools:context=".Activities.connection.MainActivity">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/img_acceuil_app" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="VENTES v1.0"
+            android:textSize="40dp"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:id="@+id/main_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Utilisateur"
+            android:layout_marginTop="40dp"
+            android:inputType="text"
+            android:imeOptions="actionNext"/>
+
+        <EditText
+            android:id="@+id/main_mdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Mot de Passe"
+            android:layout_marginTop="30dp"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:imeOptions="actionDone"/>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/pbbar" />
+
+    </LinearLayout>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        app:itemIconTint="@color/colorWhite"
+        app:itemTextColor="@color/colorWhite"
+        app:menu="@menu/bottom_navigation_main"/>
+
+</RelativeLayout>
+

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#0b489d</color>
+    <color name="colorPrimaryDark">#0b489d</color>
+    <color name="colorAccent">#0b489d</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="green">#c4f2c4</color>
+    <color name="orange">#ffd965</color>
+    <color name="red">#f2c4c4</color>
+    <color name="black">#000000</color>
+
+    <color name="border">#AFAFAF</color>
+    <color name="border_red">#ff6767</color>
+    <color name="border_yellow">#ffe667</color>
+
+    <!-- Array of colors that will be used by ViewPager as background colors -->
+    <array name="colorPagesViewPager">
+        <item>#EDD9CF</item>
+        <item>#BED4D6</item>
+        <item>#ADCEB7</item>
+        <item>#F7CF8B</item>
+        <item>#FD96A2</item>
+    </array>
+
+</resources>

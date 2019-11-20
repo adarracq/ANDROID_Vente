@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item
+    android:id="@+id/config_onglet"
+    android:icon="@drawable/icon_param"
+    android:title="Configuration"/>
+
+<item
+    android:id="@+id/connec_onglet"
+    android:icon="@drawable/icon_login"
+    android:title="Connexion"/>
+</menu>

@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/activity_main" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_margin="16dp">
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:padding="4dp"
+            android:background="@drawable/white_border">
+
+            /*Client*/
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="Client"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/saisie_ligne_client"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:background="@drawable/border"
+                    android:paddingLeft="5dp"
+                    android:textSize="18dp" />
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:orientation="horizontal">
+
+                    /*Solde*/
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="Solde"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18dp"
+                        android:layout_gravity="center_horizontal"
+                        />
+
+
+                    <EditText
+                        android:id="@+id/saisie_ligne_solde"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="3dp"
+                        android:textSize="18dp"
+                        android:inputType="text"
+                        android:imeOptions="actionNext"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/border"
+                        android:gravity="right"
+                        android:focusable="false"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:orientation="horizontal">
+
+                    /*Valeur*/
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="Valeur"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18dp"
+                        android:paddingLeft="10dp"
+                        />
+
+
+                    <EditText
+                        android:id="@+id/saisie_ligne_valeur"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="3dp"
+                        android:textSize="18dp"
+                        android:inputType="text"
+                        android:imeOptions="actionNext"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/border"
+                        android:gravity="right"
+                        android:focusable="false"
+                        />
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+        /*ARTICLE*/
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:orientation="vertical"
+            android:padding="4dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/white_border">
+
+            /*Article*/
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="Article"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/saisie_ligne_article"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/white_border"
+                    android:imeOptions="actionDone"
+                    android:selectAllOnFocus="true"
+                    android:paddingLeft="5dp"
+                    android:layout_weight="1"
+                    android:inputType="text"/>
+
+            </LinearLayout>
+
+            /*Libellé*/
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="Libellé"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/saisie_ligne_lib"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:background="@drawable/border"
+                    android:paddingLeft="5dp"
+                    android:textSize="18dp" />
+
+            </LinearLayout>
+
+            /*Lot*/
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="Lot"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/saisie_ligne_lot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/white_border"
+                    android:imeOptions="actionDone"
+                    android:selectAllOnFocus="true"
+                    android:paddingLeft="5dp"
+                    android:layout_weight="1"
+                    android:inputType="text"/>
+
+            </LinearLayout>
+
+
+
+
+
+
+        </LinearLayout>
+
+
+
+        /*DETAIL*/
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7"
+            android:orientation="vertical"
+            android:padding="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/white_border">
+
+            /*Colis*/
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="Colis"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/saisie_ligne_colis"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="18dp"
+                    android:layout_marginRight="20dp"
+                    android:imeOptions="actionNext"
+                    android:selectAllOnFocus="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:background="@drawable/white_border"
+                    android:paddingRight="5dp"
+                    android:gravity="right"
+                    android:inputType="numberDecimal"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
+
+            /*Pieces*/
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="Pièces"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/saisie_ligne_pieces"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="18dp"
+                    android:layout_marginRight="20dp"
+                    android:imeOptions="actionNext"
+                    android:selectAllOnFocus="true"
+                    android:background="@drawable/white_border"
+                    android:paddingRight="5dp"
+                    android:gravity="right"
+                    android:inputType="numberDecimal"/>
+
+                <EditText
+                    android:id="@+id/saisie_ligne_piecesU"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:imeOptions="actionNext"
+                    android:focusable="false"
+                    android:inputType="numberDecimal"
+                    android:background="@drawable/border"
+                    android:paddingRight="5dp"
+                    android:gravity="right"
+                    android:textSize="18dp" />
+
+            </LinearLayout>
+
+            /*Pds brut*/
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="Pds Brut"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/saisie_ligne_pdsBrut"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textSize="18dp"
+                    android:layout_marginRight="20dp"
+                    android:imeOptions="actionNext"
+                    android:selectAllOnFocus="true"
+                    android:background="@drawable/white_border"
+                    android:paddingRight="5dp"
+                    android:gravity="right"
+                    android:inputType="numberDecimal"/>
+
+                <EditText
+                    android:id="@+id/saisie_ligne_pdsBrutU"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:imeOptions="actionNext"
+                    android:focusable="false"
+                    android:inputType="numberDecimal"
+                    android:background="@drawable/border"
+                    android:paddingRight="5dp"
+                    android:gravity="right"
+                    android:textSize="18dp" />
+
+
+            </LinearLayout>
+
+            /*Tare*/
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="Tare"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/saisie_ligne_tare"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginRight="20dp"
+                    android:imeOptions="actionNext"
+                    android:focusable="false"
+                    android:inputType="numberDecimal"
+                    android:background="@drawable/border"
+                    android:paddingRight="5dp"
+                    android:gravity="right"
+                    android:textSize="18dp"/>
+
+                <EditText
+                    android:id="@+id/saisie_ligne_tareU"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:imeOptions="actionNext"
+                    android:selectAllOnFocus="true"
+                    android:background="@drawable/white_border"
+                    android:paddingRight="5dp"
+                    android:gravity="right"
+                    android:textSize="18dp" />
+
+            </LinearLayout>
+
+            /*Pds net*/
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="Pds Net"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/saisie_ligne_pdsNet"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textSize="18dp"
+                    android:layout_marginRight="20dp"
+                    android:imeOptions="actionNext"
+                    android:selectAllOnFocus="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:background="@drawable/white_border"
+                    android:paddingRight="5dp"
+                    android:gravity="right"
+                    android:inputType="numberDecimal"/>
+
+                <EditText
+                    android:id="@+id/saisie_ligne_pdsNetU"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:imeOptions="actionNext"
+                    android:focusable="false"
+                    android:inputType="numberDecimal"
+                    android:background="@drawable/border"
+                    android:paddingRight="5dp"
+                    android:gravity="right"
+                    android:textSize="18dp" />
+
+            </LinearLayout>
+
+            /*Prix*/
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="Prix"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/saisie_ligne_prix"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="18dp"
+                    android:layout_marginRight="20dp"
+                    android:imeOptions="actionNext"
+                    android:selectAllOnFocus="true"
+                    android:background="@drawable/white_border"
+                    android:paddingRight="5dp"
+                    android:gravity="right"
+                    android:inputType="numberDecimal"/>
+
+                <EditText
+                    android:id="@+id/saisie_ligne_u_fact"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:imeOptions="actionNext"
+                    android:focusable="false"
+                    android:inputType="numberDecimal"
+                    android:background="@drawable/border"
+                    android:paddingRight="5dp"
+                    android:gravity="right"
+                    android:textSize="18dp" />
+
+            </LinearLayout>
+
+            /*Montant*/
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="Montant"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/saisie_ligne_montant"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="18dp"
+                    android:layout_marginRight="20dp"
+                    android:imeOptions="actionNext"
+                    android:selectAllOnFocus="true"
+                    android:background="@drawable/white_border"
+                    android:paddingRight="5dp"
+                    android:gravity="right"
+                    android:inputType="numberDecimal"/>
+
+                <EditText
+                    android:id="@+id/saisie_ligne_DLC"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:imeOptions="actionNext"
+                    android:focusable="false"
+                    android:inputType="numberDecimal"
+                    android:background="@drawable/white_border"
+                    android:paddingRight="5dp"
+                    android:gravity="right"
+                    android:textSize="18dp" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation_saisie_ligne"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        app:itemIconTint="@color/colorWhite"
+        app:itemTextColor="@color/colorWhite"
+        app:menu="@menu/bottom_navigation_detail_vente"/>
+
+</RelativeLayout>
