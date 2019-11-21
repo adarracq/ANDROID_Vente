@@ -9,8 +9,10 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -40,6 +42,7 @@ public class SaisieLigne extends AppCompatActivity {
     EditText eLib;
     EditText eLot;
     EditText eArtnr;
+    TextView tArtnr;
     EditText eColis;
     EditText ePieces;
     EditText ePiecesU;
@@ -56,6 +59,9 @@ public class SaisieLigne extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     Orp orp = new Orp();
 
+    int poids;
+    Double poidTotal;
+
     private String [] Articles;
     private String [] Lots;
     private String [] Lots2;
@@ -64,6 +70,9 @@ public class SaisieLigne extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saisie_ligne);
+
+        poids = 0;
+        poidTotal = 0.0;
 
         initFields();
         initListeners();
@@ -77,6 +86,7 @@ public class SaisieLigne extends AppCompatActivity {
         eSolde       = findViewById(R.id.saisie_ligne_solde);
         eValeur       = findViewById(R.id.saisie_ligne_valeur);
         eArtnr      = findViewById(R.id.saisie_ligne_article);
+        tArtnr      = findViewById(R.id.saisie_ligne_tarticle);
         eLib        = findViewById(R.id.saisie_ligne_lib);
         eLot        = findViewById(R.id.saisie_ligne_lot);
         eColis      = findViewById(R.id.saisie_ligne_colis);
@@ -96,6 +106,19 @@ public class SaisieLigne extends AppCompatActivity {
     }
 
     private void initListeners() {
+
+        tArtnr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eArtnr.setText("");
+                if(eArtnr.getInputType() == InputType.TYPE_CLASS_NUMBER){
+                    eArtnr.setInputType(InputType.TYPE_CLASS_TEXT);
+                }
+                else {
+                    eArtnr.setInputType(InputType.TYPE_CLASS_NUMBER);
+                }
+            }
+        });
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -183,6 +206,7 @@ public class SaisieLigne extends AppCompatActivity {
         }
         orp.setPieces(Double.parseDouble(ePieces.getText().toString()));
         orp.setPiecesU(Double.parseDouble(ePiecesU.getText().toString()));
+        // Si saisie de plusieurs poids on ne sauvegarde pas chaque poids en poid total
         orp.setPdsNet(Double.parseDouble(ePdsNet.getText().toString()));
         orp.setPdsNetU(Double.parseDouble(ePdsNetU.getText().toString()));
         orp.setTare(Double.parseDouble(eTare.getText().toString()));
@@ -203,6 +227,23 @@ public class SaisieLigne extends AppCompatActivity {
             setGetArticle();
         }
         fillFields();
+    }
+
+    public void showPoids(){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage("Poids total : " + poidTotal);
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 
     public void showError(String message, DialogInterface.OnClickListener listener)
@@ -340,6 +381,61 @@ public class SaisieLigne extends AppCompatActivity {
         });
 
         b.show();
+    }
+
+    private void saisiePoidsVar(final EditText editText) {
+
+        if(poids == orp.getColis()-1)
+        {
+            System.out.println("aaaaaaaaaaaaa " + orp.getPdsNet());
+            System.out.println("aaaaaaaaaaaaa " + poids + "/" + orp.getColis());
+
+            poidTotal = poidTotal +  Double.parseDouble(ePdsNet.getText().toString());
+
+            ePdsNet.setText(poidTotal+"");
+            showPoids();
+
+            editText.post(new Runnable() {
+                @Override
+                public void run() {
+                    orp.setPdsNet(poidTotal);
+                    editText.requestFocus();
+                }
+            });
+
+            poids = 0;
+        }
+        else if (poids == 0)
+        {
+            System.out.println("bbbbbbbbbbbbb " + orp.getPdsNet());
+            System.out.println("bbbbbbbbbbbbb " + poids + "/" + orp.getColis());
+
+            poids++;
+            poidTotal = Double.parseDouble(ePdsNet.getText().toString());
+            ePdsNet.setText("");
+            ePdsNet.post(new Runnable() {
+                @Override
+                public void run() {
+                    ePdsNet.requestFocus();
+                }
+            });
+        }
+        else
+        {
+            System.out.println("cccccccccccccccc " + orp.getPdsNet());
+            System.out.println("cccccccccccccccc " + poids + "/" + orp.getColis());
+            System.out.println("cccccccccccccccc " + ePdsNet.getText().toString());
+
+            poids++;
+            poidTotal = poidTotal +  Double.parseDouble(ePdsNet.getText().toString());
+            ePdsNet.setText("");
+            ePdsNet.post(new Runnable() {
+                @Override
+                public void run() {
+                    ePdsNet.requestFocus();
+                }
+            });
+        }
     }
 
     private void lockUI()
@@ -951,57 +1047,41 @@ public class SaisieLigne extends AppCompatActivity {
                     switch (orp.getModeSaisie()) {
 
                         case "Poids net total":
-                            ePu.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    ePu.requestFocus();
-                                }
-                            });
+
+                            if(orp.getPoidsVar() == 0) {
+                                saisiePoidsVar(ePu);
+                            }
+
                             break;
 
                         case "Poids brut total":
-                            eColis.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    eColis.requestFocus();
-                                }
-                            });
+                            if(orp.getPoidsVar() == 0) {
+                                saisiePoidsVar(eColis);
+                            }
                             break;
 
                         case "NULL":
-                            ePu.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    ePu.requestFocus();
-                                }
-                            });
+                            if(orp.getPoidsVar() == 0) {
+                                saisiePoidsVar(ePu);
+                            }
                             break;
 
                         case "Colis":
-                            eColis.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    eColis.requestFocus();
-                                }
-                            });
+                            if(orp.getPoidsVar() == 0) {
+                                saisiePoidsVar(eColis);
+                            }
                             break;
 
                         case "pieces totales":
-                            eColis.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    eColis.requestFocus();
-                                }
-                            });
+                            if(orp.getPoidsVar() == 1) {
+                                saisiePoidsVar(eColis);
+                            }
                             break;
 
                         default:
-                            ePu.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    ePu.requestFocus();
-                                }
-                            });
+                            if(orp.getPoidsVar() == 1) {
+                                saisiePoidsVar(ePu);
+                            }
                             break;
                     }
 
@@ -1259,6 +1339,7 @@ public class SaisieLigne extends AppCompatActivity {
                     orp.setPdsBrutU(jsonArray.getJSONObject(0).getDouble("PdsBrutU"));
                     orp.setTareU(jsonArray.getJSONObject(0).getDouble("TareU"));
                     orp.setPdsNetU(jsonArray.getJSONObject(0).getDouble("PdsNetU"));
+                    orp.setPoidsVar(jsonArray.getJSONObject(0).getInt("PoidsVar"));
 
                     fillFields();
 
@@ -1408,6 +1489,7 @@ public class SaisieLigne extends AppCompatActivity {
             }
         }
     }
+
 
     private class GetLot extends AsyncTask<String, Void, String> {
         @Override
@@ -1597,6 +1679,7 @@ public class SaisieLigne extends AppCompatActivity {
         }
     }
 
+
     private class UpdateOrp extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
@@ -1657,6 +1740,7 @@ public class SaisieLigne extends AppCompatActivity {
             }
         }
     }
+
 
     private class ValidVente extends AsyncTask<String, Void, String> {
         @Override

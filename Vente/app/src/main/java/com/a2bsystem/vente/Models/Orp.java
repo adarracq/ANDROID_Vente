@@ -24,6 +24,7 @@ public class Orp implements Serializable {
     private Double montant;
     private String DLC;
     private String modeSaisie;
+    private int poidsVar;
     private int statut;
 
     public Orp() {
@@ -51,6 +52,7 @@ public class Orp implements Serializable {
         this.DLC = "";
         this.statut = 0;
         this.modeSaisie = "";
+        this.poidsVar = 1;
     }
 
     public Orp(String ordernr, String ordradnr, String artnr, String lib, Double colis, Double pieces, Double pdsNet, Double montant, int statut) {
@@ -65,7 +67,7 @@ public class Orp implements Serializable {
         this.statut = statut;
     }
 
-    public Orp(Vente vente, String artnr, String lib, String lot, String ordernr, String ordradnr, Double colis, Double pieces, Double pdsBrut, Double tare, Double pdsNet, Double piecesU, Double pdsBrutU, Double tareU, Double pdsNetU, String uniteFact, Double pu, Double montant, String DLC,String modeSaisie, int statut) {
+    public Orp(Vente vente, String artnr, String lib, String lot, String ordernr, String ordradnr, Double colis, Double pieces, Double pdsBrut, Double tare, Double pdsNet, Double piecesU, Double pdsBrutU, Double tareU, Double pdsNetU, String uniteFact, Double pu, Double montant, String DLC,String modeSaisie, int poidsVar, int statut) {
         this.vente = vente;
         this.artnr = artnr;
         this.lib = lib;
@@ -87,6 +89,7 @@ public class Orp implements Serializable {
         this.DLC = DLC;
         this.statut = statut;
         this.modeSaisie = modeSaisie;
+        this.poidsVar = poidsVar;
     }
 
 
@@ -256,5 +259,13 @@ public class Orp implements Serializable {
 
     public void setModeSaisie(String modeSaisie) {
         this.modeSaisie = modeSaisie;
+    }
+
+    public int getPoidsVar() {
+        return poidsVar;
+    }
+
+    public void setPoidsVar(int poidsVar) {
+        this.poidsVar = poidsVar;
     }
 }

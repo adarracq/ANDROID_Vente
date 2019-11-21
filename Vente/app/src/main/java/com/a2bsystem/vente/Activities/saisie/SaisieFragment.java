@@ -613,6 +613,7 @@ public class SaisieFragment extends Fragment {
                                 Double.parseDouble(jsonArray.getJSONObject(i).getString("Montant")),
                                 "", //TODO DLC
                                 "",
+                                Integer.parseInt(jsonArray.getJSONObject(i).getString("PoidsVar")),
                                 statut
                         ));
                     }

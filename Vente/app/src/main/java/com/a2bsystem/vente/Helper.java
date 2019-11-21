@@ -32,6 +32,9 @@ public class Helper {
     // Paramètres client
     public static int paramLot;
     public static String depot;
+    public static int saisiePrix;
+    public static int maxVentes;
+    public static int saisieUa;
 
     // Certificat SSL sur le serveur web?
     public static Boolean SSL = true;
