@@ -41,6 +41,7 @@ public class SaisieLigne extends AppCompatActivity {
     EditText eValeur;
     EditText eLib;
     EditText eLot;
+    TextView tLot;
     EditText eArtnr;
     TextView tArtnr;
     EditText eColis;
@@ -89,6 +90,7 @@ public class SaisieLigne extends AppCompatActivity {
         tArtnr      = findViewById(R.id.saisie_ligne_tarticle);
         eLib        = findViewById(R.id.saisie_ligne_lib);
         eLot        = findViewById(R.id.saisie_ligne_lot);
+        tLot        = findViewById(R.id.saisie_ligne_tlot);
         eColis      = findViewById(R.id.saisie_ligne_colis);
         ePieces     = findViewById(R.id.saisie_ligne_pieces);
         ePiecesU    = findViewById(R.id.saisie_ligne_piecesU);
@@ -116,6 +118,19 @@ public class SaisieLigne extends AppCompatActivity {
                 }
                 else {
                     eArtnr.setInputType(InputType.TYPE_CLASS_NUMBER);
+                }
+            }
+        });
+
+        tLot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eLot.setText("");
+                if(eLot.getInputType() == InputType.TYPE_CLASS_NUMBER){
+                    eLot.setInputType(InputType.TYPE_CLASS_TEXT);
+                }
+                else {
+                    eLot.setInputType(InputType.TYPE_CLASS_NUMBER);
                 }
             }
         });
@@ -163,6 +178,7 @@ public class SaisieLigne extends AppCompatActivity {
         {
             eLot.setEnabled(false);
             eLot.setBackgroundResource(R.drawable.border);
+            eArtnr.requestFocus();
         }
         else {
             eLot.requestFocus();
@@ -183,6 +199,7 @@ public class SaisieLigne extends AppCompatActivity {
             eColis.setText("");
         }
 
+        eLot.setText(orp.getLot());
         ePieces.setText(orp.getPieces()+"");
         ePiecesU.setText(orp.getPiecesU()+"");
         ePdsNet.setText(orp.getPdsNet()+"");
@@ -232,6 +249,23 @@ public class SaisieLigne extends AppCompatActivity {
     public void showPoids(){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage("Poids total : " + poidTotal);
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
+
+    public void showPrix(){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage("Prix total : " + orp.getPu() * orp.getColis() + " €");
         builder1.setCancelable(true);
 
         builder1.setPositiveButton(
@@ -324,10 +358,20 @@ public class SaisieLigne extends AppCompatActivity {
         orp =  new Orp(orp.getVente());
         eDLC.setText("");
         fillFields();
-        eArtnr.requestFocus();
+        manageLot();
         InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
+    }
+
+    public void validOrp() {
+        showPrix();
+        if(orp.getOrdernr().equalsIgnoreCase("")){
+            setCreateOrp();
+        }
+        else {
+            setUpdateOrp();
+        }
     }
 
     private void selectArticle() {
@@ -387,29 +431,39 @@ public class SaisieLigne extends AppCompatActivity {
 
         if(poids == orp.getColis()-1)
         {
-            System.out.println("aaaaaaaaaaaaa " + orp.getPdsNet());
-            System.out.println("aaaaaaaaaaaaa " + poids + "/" + orp.getColis());
-
             poidTotal = poidTotal +  Double.parseDouble(ePdsNet.getText().toString());
 
             ePdsNet.setText(poidTotal+"");
             showPoids();
 
-            editText.post(new Runnable() {
-                @Override
-                public void run() {
-                    orp.setPdsNet(poidTotal);
-                    editText.requestFocus();
+            if(editText == ePu){
+                orp.setPdsNet(poidTotal);
+                if(Helper.saisiePrix == 0) {
+                    validOrp();
                 }
-            });
+                else {
+                    ePu.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            ePu.requestFocus();
+                        }
+                    });
+                }
+            }
+            else {
+                editText.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        orp.setPdsNet(poidTotal);
+                        editText.requestFocus();
+                    }
+                });
+            }
 
             poids = 0;
         }
         else if (poids == 0)
         {
-            System.out.println("bbbbbbbbbbbbb " + orp.getPdsNet());
-            System.out.println("bbbbbbbbbbbbb " + poids + "/" + orp.getColis());
-
             poids++;
             poidTotal = Double.parseDouble(ePdsNet.getText().toString());
             ePdsNet.setText("");
@@ -422,10 +476,6 @@ public class SaisieLigne extends AppCompatActivity {
         }
         else
         {
-            System.out.println("cccccccccccccccc " + orp.getPdsNet());
-            System.out.println("cccccccccccccccc " + poids + "/" + orp.getColis());
-            System.out.println("cccccccccccccccc " + ePdsNet.getText().toString());
-
             poids++;
             poidTotal = poidTotal +  Double.parseDouble(ePdsNet.getText().toString());
             ePdsNet.setText("");
@@ -529,12 +579,17 @@ public class SaisieLigne extends AppCompatActivity {
                             break;
 
                         case "Colis":
-                            ePu.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    ePu.requestFocus();
-                                }
-                            });
+                            if(Helper.saisiePrix == 0) {
+                                validOrp();
+                            }
+                            else {
+                                ePu.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ePu.requestFocus();
+                                    }
+                                });
+                            }
                             break;
 
                         case "pieces totales":
@@ -675,12 +730,17 @@ public class SaisieLigne extends AppCompatActivity {
                             break;
 
                         case "pieces totales":
-                            ePu.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    ePu.requestFocus();
-                                }
-                            });
+                            if(Helper.saisiePrix == 0) {
+                                validOrp();
+                            }
+                            else {
+                                ePu.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ePu.requestFocus();
+                                    }
+                                });
+                            }
                             break;
 
                         default:
@@ -855,12 +915,17 @@ public class SaisieLigne extends AppCompatActivity {
                             break;
 
                         case "Poids brut total":
-                            ePu.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    ePu.requestFocus();
-                                }
-                            });
+                            if(Helper.saisiePrix == 0) {
+                                validOrp();
+                            }
+                            else {
+                                ePu.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ePu.requestFocus();
+                                    }
+                                });
+                            }
                             break;
 
                         case "NULL":
@@ -924,12 +989,17 @@ public class SaisieLigne extends AppCompatActivity {
                             break;
 
                         case "Poids brut total":
-                            ePu.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    ePu.requestFocus();
-                                }
-                            });
+                            if(Helper.saisiePrix == 0) {
+                                validOrp();
+                            }
+                            else {
+                                ePu.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ePu.requestFocus();
+                                    }
+                                });
+                            }
                             break;
 
                         case "NULL":
@@ -1051,6 +1121,14 @@ public class SaisieLigne extends AppCompatActivity {
                             if(orp.getPoidsVar() == 0) {
                                 saisiePoidsVar(ePu);
                             }
+                            else {
+                                ePu.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ePu.requestFocus();
+                                    }
+                                });
+                            }
 
                             break;
 
@@ -1058,11 +1136,27 @@ public class SaisieLigne extends AppCompatActivity {
                             if(orp.getPoidsVar() == 0) {
                                 saisiePoidsVar(eColis);
                             }
+                            else {
+                                eColis.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        eColis.requestFocus();
+                                    }
+                                });
+                            }
                             break;
 
                         case "NULL":
                             if(orp.getPoidsVar() == 0) {
                                 saisiePoidsVar(ePu);
+                            }
+                            else {
+                                ePu.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ePu.requestFocus();
+                                    }
+                                });
                             }
                             break;
 
@@ -1070,17 +1164,41 @@ public class SaisieLigne extends AppCompatActivity {
                             if(orp.getPoidsVar() == 0) {
                                 saisiePoidsVar(eColis);
                             }
+                            else {
+                                eColis.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        eColis.requestFocus();
+                                    }
+                                });
+                            }
                             break;
 
                         case "pieces totales":
                             if(orp.getPoidsVar() == 1) {
                                 saisiePoidsVar(eColis);
                             }
+                            else {
+                                eColis.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        eColis.requestFocus();
+                                    }
+                                });
+                            }
                             break;
 
                         default:
                             if(orp.getPoidsVar() == 1) {
                                 saisiePoidsVar(ePu);
+                            }
+                            else {
+                                ePu.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ePu.requestFocus();
+                                    }
+                                });
                             }
                             break;
                     }
@@ -1114,12 +1232,17 @@ public class SaisieLigne extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 calculate(1);
                 if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                    ePu.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            ePu.requestFocus();
-                        }
-                    });
+                    if(Helper.saisiePrix == 0) {
+                        validOrp();
+                    }
+                    else {
+                        ePu.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                ePu.requestFocus();
+                            }
+                        });
+                    }
                 }
                 return false;
             }
@@ -1316,7 +1439,6 @@ public class SaisieLigne extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String output) {
-            System.out.println(output);
             unlockUI();
             if(output.equalsIgnoreCase("-1"))
             {

@@ -195,8 +195,11 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(output);
 
 
-                    Helper.paramLot = Integer.parseInt(jsonObject.getString("ParamLot"));
+                    Helper.paramLot = jsonObject.getInt("ParamLot");
                     Helper.depot = jsonObject.getString("Depot");
+                    Helper.maxVentes = jsonObject.getInt("MaxVentes");
+                    Helper.maxVentes = 0;
+                    //Helper.saisiePrix = jsonObject.getInt("SaisiePrix");
                     Helper.vendeur = "02";
 
 

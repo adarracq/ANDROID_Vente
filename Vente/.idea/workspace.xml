@@ -85,27 +85,13 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a2bsystem/vente/Activities/saisie/SaisieLigne.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="237">
-              <caret line="1052" column="29" lean-forward="true" selection-start-line="1052" selection-start-column="29" selection-end-line="1052" selection-end-column="29" />
+            <state relative-caret-position="126">
+              <caret line="264" lean-forward="true" selection-start-line="264" selection-end-line="264" />
               <folding>
-                <element signature="e#3486#3909#0" expanded="true" />
-                <element signature="e#3908#3909#0" expanded="true" />
-                <element signature="e#13385#13561#0" expanded="true" />
-                <element signature="e#13560#13561#0" expanded="true" />
-                <element signature="e#17138#17368#0" expanded="true" />
-                <element signature="e#17367#17368#0" expanded="true" />
-                <element signature="e#37351#38176#0" />
-                <element signature="e#38182#38782#0" />
-                <element signature="e#38788#39264#0" />
-                <element signature="e#39270#39902#0" />
-                <element signature="e#39908#40859#0" />
-                <element signature="e#40866#41358#0" />
-                <element signature="e#41364#44381#0" />
-                <element signature="e#44388#50246#0" />
-                <element signature="e#50252#54668#0" />
-                <element signature="e#54675#57231#0" />
-                <element signature="e#57237#59368#0" />
-                <element signature="e#59374#61496#0" />
+                <element signature="e#8850#9044#0" expanded="true" />
+                <element signature="e#9043#9044#0" expanded="true" />
+                <element signature="e#17639#20380#0" expanded="true" />
+                <element signature="e#20379#20380#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -114,11 +100,23 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_saisie_ligne.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="351">
-              <caret line="425" column="51" selection-start-line="425" selection-start-column="51" selection-end-line="425" selection-end-column="51" />
+            <state relative-caret-position="111">
+              <caret line="191" column="43" selection-start-line="191" selection-start-column="43" selection-end-line="191" selection-end-column="43" />
             </state>
           </provider>
           <provider editor-type-id="android-designer2" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a2bsystem/vente/Activities/connection/MainActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="380">
+              <caret line="200" column="41" selection-start-line="200" selection-start-column="41" selection-end-line="200" selection-end-column="41" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
         </entry>
       </file>
     </leaf>
@@ -147,9 +145,11 @@
       <find>setDep</find>
       <find>mana</find>
       <find>setPdsNet</find>
+      <find>etPoidsVar</find>
       <find>ePu.re</find>
       <find>ePu</find>
-      <find>etPoidsVar</find>
+      <find>saisiePrix</find>
+      <find>getMo</find>
     </findStrings>
   </component>
   <component name="GenerateSignedApkSettings">
@@ -195,10 +195,10 @@
         <option value="$PROJECT_DIR$/app/src/main/res/menu/bottom_navigation_detail_vente.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_config.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/a2bsystem/vente/Activities/connection/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/a2bsystem/vente/Models/Orp.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/a2bsystem/vente/Activities/saisie/SaisieFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/a2bsystem/vente/Helper.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/a2bsystem/vente/Activities/connection/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_saisie_ligne.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/a2bsystem/vente/Activities/saisie/SaisieLigne.java" />
       </list>
@@ -249,6 +249,14 @@
               <item name="java" type="edd41e36:AndroidSourceTypeNode" />
               <item name="vente" type="cbb59c9e:AndroidPsiDirectoryNode" />
               <item name="Activities" type="462c0819:PsiDirectoryNode" />
+              <item name="connection" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Vente" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="vente" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="Activities" type="462c0819:PsiDirectoryNode" />
               <item name="saisie" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -262,6 +270,12 @@
               <item name="Vente" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="res" type="d4f16f75:AndroidResFolderNode" />
+            </path>
+            <path>
+              <item name="Vente" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="res" type="d4f16f75:AndroidResFolderNode" />
+              <item name="drawable" type="ddeffd01:AndroidResFolderTypeNode" />
             </path>
             <path>
               <item name="Vente" type="1abcf292:AndroidViewProjectNode" />
@@ -303,7 +317,7 @@
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="device.picker.selection" value="1799636" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/res/drawable" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../../DIVERS/old ANDROID/2BApp - RECEPTION" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../../DIVERS/old ANDROID/2BApp - PREPA/2BSystemAPP" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -422,7 +436,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.11513859" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.11513859" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info id="Build Variants" order="4" side_tool="true" />
@@ -435,10 +449,10 @@
       <window_info anchor="bottom" id="TODO" order="2" />
       <window_info anchor="bottom" id="Terminal" order="3" weight="0.3285968" />
       <window_info anchor="bottom" id="Event Log" order="4" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Build" order="5" visible="true" weight="0.2524377" />
+      <window_info anchor="bottom" id="Build" order="5" weight="0.2524377" />
       <window_info anchor="bottom" id="Android Profiler" order="6" />
       <window_info anchor="bottom" id="Run" order="7" weight="0.3109426" />
-      <window_info anchor="bottom" id="Debug" order="8" weight="0.3391116" />
+      <window_info anchor="bottom" id="Debug" order="8" visible="true" weight="0.3391116" />
       <window_info anchor="bottom" id="Find" order="9" />
       <window_info anchor="right" id="Device File Explorer" order="0" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" order="1" />
@@ -657,16 +671,6 @@
       </provider>
       <provider editor-type-id="android-designer2" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a2bsystem/vente/Activities/connection/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="159">
-          <caret line="178" column="53" selection-start-line="178" selection-start-column="53" selection-end-line="178" selection-end-column="53" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a2bsystem/vente/Activities/listeventes/VentesList.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="118">
@@ -712,14 +716,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_saisie_ligne.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="425" column="51" selection-start-line="425" selection-start-column="51" selection-end-line="425" selection-end-column="51" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a2bsystem/vente/Models/Orp.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="413">
@@ -733,29 +729,33 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a2bsystem/vente/Activities/connection/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="200" column="41" selection-start-line="200" selection-start-column="41" selection-end-line="200" selection-end-column="41" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_saisie_ligne.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="111">
+          <caret line="191" column="43" selection-start-line="191" selection-start-column="43" selection-end-line="191" selection-end-column="43" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a2bsystem/vente/Activities/saisie/SaisieLigne.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="1052" column="29" lean-forward="true" selection-start-line="1052" selection-start-column="29" selection-end-line="1052" selection-end-column="29" />
+        <state relative-caret-position="126">
+          <caret line="264" lean-forward="true" selection-start-line="264" selection-end-line="264" />
           <folding>
-            <element signature="e#3486#3909#0" expanded="true" />
-            <element signature="e#3908#3909#0" expanded="true" />
-            <element signature="e#13385#13561#0" expanded="true" />
-            <element signature="e#13560#13561#0" expanded="true" />
-            <element signature="e#17138#17368#0" expanded="true" />
-            <element signature="e#17367#17368#0" expanded="true" />
-            <element signature="e#37351#38176#0" />
-            <element signature="e#38182#38782#0" />
-            <element signature="e#38788#39264#0" />
-            <element signature="e#39270#39902#0" />
-            <element signature="e#39908#40859#0" />
-            <element signature="e#40866#41358#0" />
-            <element signature="e#41364#44381#0" />
-            <element signature="e#44388#50246#0" />
-            <element signature="e#50252#54668#0" />
-            <element signature="e#54675#57231#0" />
-            <element signature="e#57237#59368#0" />
-            <element signature="e#59374#61496#0" />
+            <element signature="e#8850#9044#0" expanded="true" />
+            <element signature="e#9043#9044#0" expanded="true" />
+            <element signature="e#17639#20380#0" expanded="true" />
+            <element signature="e#20379#20380#0" expanded="true" />
           </folding>
         </state>
       </provider>
