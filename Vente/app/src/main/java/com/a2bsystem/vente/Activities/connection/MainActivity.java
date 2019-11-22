@@ -198,8 +198,7 @@ public class MainActivity extends AppCompatActivity {
                     Helper.paramLot = jsonObject.getInt("ParamLot");
                     Helper.depot = jsonObject.getString("Depot");
                     Helper.maxVentes = jsonObject.getInt("MaxVentes");
-                    Helper.maxVentes = 0;
-                    //Helper.saisiePrix = jsonObject.getInt("SaisiePrix");
+                    Helper.saisiePrix = jsonObject.getInt("SaisiePrix");
                     Helper.vendeur = "02";
 
 

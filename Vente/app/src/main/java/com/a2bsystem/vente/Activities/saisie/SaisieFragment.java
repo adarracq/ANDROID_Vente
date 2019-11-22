@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -280,7 +281,8 @@ public class SaisieFragment extends Fragment {
 
     private void selectClient() {
 
-        AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
+        ContextThemeWrapper themedContext = new ContextThemeWrapper(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar);
+        AlertDialog.Builder b = new AlertDialog.Builder(themedContext);
         b.setTitle("Choix du Client");
         b.setItems(Clients2, new DialogInterface.OnClickListener() {
 

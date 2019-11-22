@@ -10,12 +10,14 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.a2bsystem.vente.Helper;
@@ -33,6 +35,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+
+import static java.security.AccessController.getContext;
 
 public class SaisieLigne extends AppCompatActivity {
 
@@ -265,6 +269,7 @@ public class SaisieLigne extends AppCompatActivity {
 
     public void showPrix(){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        System.out.println("pu : " + orp.getPu() + "colis : " + orp.getColis() +"pu : " + orp.getMontant());
         builder1.setMessage("Prix total : " + orp.getPu() * orp.getColis() + " €");
         builder1.setCancelable(true);
 
@@ -375,7 +380,8 @@ public class SaisieLigne extends AppCompatActivity {
     }
 
     private void selectArticle() {
-        AlertDialog.Builder b = new AlertDialog.Builder(this);
+        ContextThemeWrapper themedContext = new ContextThemeWrapper(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar);
+        AlertDialog.Builder b = new AlertDialog.Builder(themedContext);
         b.setTitle("Choix Article");
         b.setItems(Articles, new DialogInterface.OnClickListener() {
 
@@ -405,7 +411,8 @@ public class SaisieLigne extends AppCompatActivity {
     }
 
     private void selectLot() {
-        AlertDialog.Builder b = new AlertDialog.Builder(this);
+        ContextThemeWrapper themedContext = new ContextThemeWrapper(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar);
+        AlertDialog.Builder b = new AlertDialog.Builder(themedContext);
         b.setTitle("Choix Lot");
         b.setItems(Lots, new DialogInterface.OnClickListener() {
 
@@ -1303,6 +1310,8 @@ public class SaisieLigne extends AppCompatActivity {
         }
         String URL = Helper.GenereateURI(SaisieLigne.this, params, "getlots");
 
+        System.out.println(URL);
+
         //Verouillage de l'interface
         lockUI();
 
@@ -1527,6 +1536,7 @@ public class SaisieLigne extends AppCompatActivity {
                 showError("Article Inconnu", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        newOrp();
                     }
                 });
             }
@@ -1662,11 +1672,12 @@ public class SaisieLigne extends AppCompatActivity {
         @Override
         protected void onPostExecute(String output) {
             unlockUI();
-            if(output.equalsIgnoreCase("-1"))
+            if(output.equalsIgnoreCase("[]"))
             {
                 showError("Pas de lot", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        newOrp();
                     }
                 });
             }
@@ -1688,6 +1699,18 @@ public class SaisieLigne extends AppCompatActivity {
 
                         setGetFields();
                     }
+                    else if (jsonArray.getJSONObject(0).getString("col").equalsIgnoreCase("1") && jsonArray.length() == 1){
+
+                        orp.setLot(jsonArray.getJSONObject(0).getString("lot"));
+                        orp.setArtnr(jsonArray.getJSONObject(0).getString("artnr"));
+                        orp.setLib(jsonArray.getJSONObject(0).getString("lib"));
+                        eLot.setText(orp.getLot());
+                        eLib.setText(orp.getLib());
+                        eArtnr.setText(orp.getArtnr());
+
+                        setGetFields();
+
+                    }
                     // Si il y a plusieurs lot
                     else if (jsonArray.getJSONObject(0).getString("col").equalsIgnoreCase("1")){
 
@@ -1700,8 +1723,8 @@ public class SaisieLigne extends AppCompatActivity {
                             Lots[i] = jsonArray.getJSONObject(i).getString("fournisseur").trim()
                                     + '\n' + "STOCK : "
                                     + round(Double.parseDouble(jsonArray.getJSONObject(i).getString("stock")), 0)
-                                    + '\n' + "PRIX : "
-                                    + jsonArray.getJSONObject(i).getString("prix") + " €";
+                                    + "     " + "PRIX : "
+                                    + round(jsonArray.getJSONObject(i).getDouble("prix"),2) + " €";
                         }
                         selectLot();
 
