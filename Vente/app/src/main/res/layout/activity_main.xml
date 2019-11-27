@@ -24,10 +24,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="VENTES v1.0"
+            android:text="VENTES"
             android:textSize="40dp"
             android:textColor="@color/colorPrimary"
             android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="v1.0"
+            android:textSize="18dp"
+            android:textColor="@color/colorPrimary"/>
 
         <EditText
             android:id="@+id/main_user"

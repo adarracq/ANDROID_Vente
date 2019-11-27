@@ -9,20 +9,21 @@ public class Vente implements Serializable {
     Double solde;
     String orderNr;
     String depot;
+    Boolean dlc;
     int statut;
-
 
 
     public Vente() {
     }
 
-    public Vente(String code, String client, Double valeur, Double solde, String orderNr, String depot, int statut) {
+    public Vente(String code, String client, Double valeur, Double solde, String orderNr, String depot, Boolean dlc, int statut) {
         this.code = code;
         this.client = client;
         this.valeur = valeur;
         this.solde = solde;
         this.orderNr = orderNr;
         this.depot = depot;
+        this.dlc = dlc;
         this.statut = statut;
     }
 
@@ -80,5 +81,13 @@ public class Vente implements Serializable {
 
     public void setDepot(String depot) {
         this.depot = depot;
+    }
+
+    public Boolean getDlc() {
+        return dlc;
+    }
+
+    public void setDlc(Boolean dlc) {
+        this.dlc = dlc;
     }
 }

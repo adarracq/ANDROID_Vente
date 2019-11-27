@@ -1125,22 +1125,27 @@ public class SaisieLigne extends AppCompatActivity {
 
                         case "Poids net total":
 
-                            if(orp.getPoidsVar() == 0) {
+                            if(orp.getPoidsVar() == 1) {
                                 saisiePoidsVar(ePu);
                             }
                             else {
-                                ePu.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        ePu.requestFocus();
-                                    }
-                                });
+                                if(Helper.saisiePrix == 0) {
+                                    validOrp();
+                                }
+                                else {
+                                    ePu.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ePu.requestFocus();
+                                        }
+                                    });
+                                }
                             }
 
                             break;
 
                         case "Poids brut total":
-                            if(orp.getPoidsVar() == 0) {
+                            if(orp.getPoidsVar() == 1) {
                                 saisiePoidsVar(eColis);
                             }
                             else {
@@ -1154,21 +1159,26 @@ public class SaisieLigne extends AppCompatActivity {
                             break;
 
                         case "NULL":
-                            if(orp.getPoidsVar() == 0) {
+                            if(orp.getPoidsVar() == 1) {
                                 saisiePoidsVar(ePu);
                             }
                             else {
-                                ePu.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        ePu.requestFocus();
-                                    }
-                                });
+                                if(Helper.saisiePrix == 0) {
+                                    validOrp();
+                                }
+                                else {
+                                    ePu.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ePu.requestFocus();
+                                        }
+                                    });
+                                }
                             }
                             break;
 
                         case "Colis":
-                            if(orp.getPoidsVar() == 0) {
+                            if(orp.getPoidsVar() == 1) {
                                 saisiePoidsVar(eColis);
                             }
                             else {
@@ -1200,12 +1210,17 @@ public class SaisieLigne extends AppCompatActivity {
                                 saisiePoidsVar(ePu);
                             }
                             else {
-                                ePu.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        ePu.requestFocus();
-                                    }
-                                });
+                                if(Helper.saisiePrix == 0) {
+                                    validOrp();
+                                }
+                                else {
+                                    ePu.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ePu.requestFocus();
+                                        }
+                                    });
+                                }
                             }
                             break;
                     }
@@ -1449,6 +1464,7 @@ public class SaisieLigne extends AppCompatActivity {
         @Override
         protected void onPostExecute(String output) {
             unlockUI();
+            System.out.println(output);
             if(output.equalsIgnoreCase("-1"))
             {
                 showError("Impossible de récupérer les champs", new DialogInterface.OnClickListener() {
