@@ -617,7 +617,7 @@ public class SaisieFragment extends Fragment {
                                 jsonArray.getJSONObject(i).getString("UniteFact").trim(),
                                 Double.parseDouble(jsonArray.getJSONObject(i).getString("Prix")),
                                 Double.parseDouble(jsonArray.getJSONObject(i).getString("Montant")),
-                                "", //TODO DLC
+                                jsonArray.getJSONObject(i).getString("DLC").replace(".",""),
                                 "",
                                 Integer.parseInt(jsonArray.getJSONObject(i).getString("PoidsVar")),
                                 statut
