@@ -146,6 +146,7 @@ public class Saisie extends AppCompatActivity {
                                 Double.parseDouble(jsonArray.getJSONObject(i).getString("Solde")),
                                 jsonArray.getJSONObject(i).getString("OrderNr"),
                                 jsonArray.getJSONObject(i).getString("Depot"),
+                                jsonArray.getJSONObject(i).getString("Dlc"),
                                 0)
                         );
                     }

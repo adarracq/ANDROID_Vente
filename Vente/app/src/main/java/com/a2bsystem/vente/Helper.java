@@ -33,8 +33,7 @@ public class Helper {
     public static int paramLot;
     public static String depot;
     public static int saisiePrix;
-    public static int maxVentes;
-    public static int saisieUa;
+    public static int monoVente;
 
     // Certificat SSL sur le serveur web?
     public static Boolean SSL = true;

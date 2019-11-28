@@ -160,11 +160,13 @@ public class SaisieFragment extends Fragment {
 
                     case R.id.vente_vente_onglet:
 
-                        // Ouvre une nouvelle fenetre de vente
-                        Intent saisieActivity = new Intent(getActivity(), Saisie.class);
-                        saisieActivity.putExtra("vente", new Vente("","",0.0,0.0,"","",0));
-                        startActivity(saisieActivity);
-                        getActivity().finish();
+                        if(Helper.monoVente == 0) {
+                            // Ouvre une nouvelle fenetre de vente
+                            Intent saisieActivity = new Intent(getActivity(), Saisie.class);
+                            saisieActivity.putExtra("vente", new Vente("","",0.0,0.0,"","","0",0));
+                            startActivity(saisieActivity);
+                            getActivity().finish();
+                        }
 
                         break;
 
@@ -373,8 +375,7 @@ public class SaisieFragment extends Fragment {
     private void setValidVente() {
         // Construction de l'URL
         RequestParams params = Helper.GenerateParams(getActivity());
-        params.put("Saljare",Helper.vendeur);
-        params.put("Code",vente.getCode());
+        params.put("Ordernr",vente.getOrderNr());
 
         String URL = Helper.GenereateURI(getActivity(), params, "validvente");
 
@@ -457,6 +458,7 @@ public class SaisieFragment extends Fragment {
                         vente.setCode(jsonArray.getJSONObject(0).getString("code"));
                         vente.setClient(jsonArray.getJSONObject(0).getString("lib"));
                         vente.setSolde(Double.parseDouble(jsonArray.getJSONObject(0).getString("solde")));
+                        vente.setDlc(jsonArray.getJSONObject(0).getString("dlc"));
                         eSolde.setText(vente.getSolde()+"");
                         eClient.setEnabled(false);
                         eClient.setBackgroundResource(R.drawable.border);
@@ -469,6 +471,7 @@ public class SaisieFragment extends Fragment {
                         vente.setCode(jsonArray.getJSONObject(0).getString("code"));
                         vente.setClient(jsonArray.getJSONObject(0).getString("lib"));
                         vente.setSolde(Double.parseDouble(jsonArray.getJSONObject(0).getString("solde")));
+                        vente.setDlc(jsonArray.getJSONObject(0).getString("dlc"));
                         eSolde.setText(vente.getSolde()+"");
                         eClient.setEnabled(false);
                         eClient.setBackgroundResource(R.drawable.border);
@@ -481,6 +484,7 @@ public class SaisieFragment extends Fragment {
                         vente.setCode(jsonArray.getJSONObject(0).getString("code"));
                         vente.setClient(jsonArray.getJSONObject(0).getString("lib"));
                         vente.setSolde(Double.parseDouble(jsonArray.getJSONObject(0).getString("solde")));
+                        vente.setDlc(jsonArray.getJSONObject(0).getString("dlc"));
                         eSolde.setText(vente.getSolde()+"");
                         eClient.setEnabled(false);
                         eClient.setBackgroundResource(R.drawable.border);
@@ -734,7 +738,7 @@ public class SaisieFragment extends Fragment {
             unlockUI();
             // Ouvre une nouvelle fenetre de vente
             Intent saisieActivity = new Intent(getActivity(), Saisie.class);
-            saisieActivity.putExtra("vente", new Vente("","",0.0,0.0,"","",0));
+            saisieActivity.putExtra("vente", new Vente("","",0.0,0.0,"","","0",0));
             startActivity(saisieActivity);
             getActivity().finish();
         }

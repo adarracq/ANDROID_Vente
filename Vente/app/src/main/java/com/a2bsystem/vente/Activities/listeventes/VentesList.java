@@ -74,10 +74,11 @@ public class VentesList extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.ventes_list_onglet:
 
-                        Intent saisieActivity = new Intent(VentesList.this, Saisie.class);
-                        saisieActivity.putExtra("vente", new Vente("","",0.0,0.0,"","",0));
-                        startActivity(saisieActivity);
-
+                        if(Helper.monoVente == 0) {
+                            Intent saisieActivity = new Intent(VentesList.this, Saisie.class);
+                            saisieActivity.putExtra("vente", new Vente("","",0.0,0.0,"","","0",0));
+                            startActivity(saisieActivity);
+                        }
                         break;
 
                 }
@@ -89,6 +90,11 @@ public class VentesList extends AppCompatActivity {
 
     private void loadVentes() {
 
+        if(ventes.size() == 0) {
+            Intent saisieActivity = new Intent(VentesList.this, Saisie.class);
+            saisieActivity.putExtra("vente", new Vente("","",0.0,0.0,"","","0",0));
+            startActivity(saisieActivity);
+        }
 
         ListView listView = findViewById(R.id.ventes_listview);
 
@@ -232,6 +238,7 @@ public class VentesList extends AppCompatActivity {
         @Override
         protected void onPostExecute(String output) {
             unlockUI();
+            System.out.println(output);
             if(output.equalsIgnoreCase("-1"))
             {
                 showError("Impossible de récupérer les ventes", new DialogInterface.OnClickListener() {
@@ -256,6 +263,7 @@ public class VentesList extends AppCompatActivity {
                                 Double.parseDouble(jsonArray.getJSONObject(i).getString("Solde")),
                                 jsonArray.getJSONObject(i).getString("OrderNr"),
                                 jsonArray.getJSONObject(i).getString("Depot"),
+                                jsonArray.getJSONObject(i).getString("Dlc"),
                                 0)
                         );
                     }

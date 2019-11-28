@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
         eMdp = findViewById(R.id.main_mdp);
         pbbar = findViewById(R.id.pbbar);
         pbbar.setVisibility(View.GONE);
-        eUser.setText("sa");
-        eMdp.setText("2bsystem99");
+        eUser.setText("ACL");
+        eMdp.setText("ACL");
     }
 
     public void initListeners() {
@@ -177,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String output) {
+            System.out.println(output);
             unlockUI();
             pbbar.setVisibility(View.GONE);
             if(output.equalsIgnoreCase("-1"))
@@ -197,12 +198,15 @@ public class MainActivity extends AppCompatActivity {
 
                     Helper.paramLot = jsonObject.getInt("ParamLot");
                     Helper.depot = jsonObject.getString("Depot");
-                    Helper.maxVentes = jsonObject.getInt("MaxVentes");
+                    Helper.monoVente = jsonObject.getInt("MonoVente");
                     Helper.saisiePrix = jsonObject.getInt("SaisiePrix");
-                    Helper.vendeur = "02";
+                    Helper.vendeur = jsonObject.getString("Vendeur");
+
+                    System.out.println("aaaaaaaaaaaaaa " + Helper.depot);
 
 
-                } catch (Exception ex) {}
+                } catch (Exception ex) {
+                }
 
                 Intent VentesList = new Intent(MainActivity.this, VentesList.class);
                 startActivity(VentesList);

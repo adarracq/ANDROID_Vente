@@ -12,18 +12,22 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.a2bsystem.vente.Helper;
 import com.a2bsystem.vente.Models.Orp;
 import com.a2bsystem.vente.Models.Vente;
 import com.a2bsystem.vente.R;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
@@ -35,6 +39,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.conn.ssl.SSLSocketFactory;
 
 import static java.security.AccessController.getContext;
 
@@ -156,12 +168,16 @@ public class SaisieLigne extends AppCompatActivity {
 
                     case R.id.vente_vente_onglet:
 
-                        confirm("La saisie d'une nouvelle vente effacera la saisie en cours.", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // TODO nouvelle vente
-                            }
-                        });
+                        if(Helper.monoVente == 0) {
+                            confirm("La saisie d'une nouvelle vente effacera la saisie en cours.", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    // TODO nouvelle vente
+
+                                }
+                            });
+                        }
 
                         break;
 
@@ -268,8 +284,10 @@ public class SaisieLigne extends AppCompatActivity {
     }
 
     public void showPrix(){
+        Toast.makeText(getApplicationContext(), "Prix total : " + orp.getPu() * orp.getColis() + " €", Toast.LENGTH_SHORT).show();
+
+        /*
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-        System.out.println("pu : " + orp.getPu() + "colis : " + orp.getColis() +"pu : " + orp.getMontant());
         builder1.setMessage("Prix total : " + orp.getPu() * orp.getColis() + " €");
         builder1.setCancelable(true);
 
@@ -283,6 +301,7 @@ public class SaisieLigne extends AppCompatActivity {
 
         AlertDialog alert11 = builder1.create();
         alert11.show();
+        */
     }
 
     public void showError(String message, DialogInterface.OnClickListener listener)
@@ -371,11 +390,21 @@ public class SaisieLigne extends AppCompatActivity {
 
     public void validOrp() {
         showPrix();
-        if(orp.getOrdernr().equalsIgnoreCase("")){
-            setCreateOrp();
+        if(orp.getVente().getDlc().equalsIgnoreCase("1")){
+            eDLC.post(new Runnable() {
+                @Override
+                public void run() {
+                    eDLC.requestFocus();
+                }
+            });
         }
         else {
-            setUpdateOrp();
+            if(orp.getOrdernr().equalsIgnoreCase("")){
+                setCreateOrp();
+            }
+            else {
+                setUpdateOrp();
+            }
         }
     }
 
@@ -1237,11 +1266,21 @@ public class SaisieLigne extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 calculate(1);
                 if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                    if(orp.getOrdernr().equalsIgnoreCase("")){
-                        setCreateOrp();
+                    if(orp.getVente().getDlc().equalsIgnoreCase("1")){
+                        eDLC.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                eDLC.requestFocus();
+                            }
+                        });
                     }
                     else {
-                        setUpdateOrp();
+                        if(orp.getOrdernr().equalsIgnoreCase("")){
+                            setCreateOrp();
+                        }
+                        else {
+                            setUpdateOrp();
+                        }
                     }
                 }
                 return false;
@@ -1254,16 +1293,35 @@ public class SaisieLigne extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 calculate(1);
                 if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                    if(Helper.saisiePrix == 0) {
-                        validOrp();
-                    }
-                    else {
-                        ePu.post(new Runnable() {
+                    if(!isValid(parseDate(eDLC.getText().toString())))
+                    {
+                        showError("DLC incorrecte", new DialogInterface.OnClickListener() {
                             @Override
-                            public void run() {
-                                ePu.requestFocus();
+                            public void onClick(DialogInterface dialog, int which) {
+                                eDLC.setText("");
+                                eDLC.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        eDLC.requestFocus();
+                                    }
+                                });
+                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+                                dialog.dismiss();
                             }
                         });
+                    }
+                    else {
+                        orp.setDLC(parseDate(eDLC.getText().toString()));
+                        eDLC.setText(orp.getDLC());
+
+                        if(orp.getOrdernr().equalsIgnoreCase("")){
+                            setCreateOrp();
+                        }
+                        else {
+                            setUpdateOrp();
+                        }
+
                     }
                 }
                 return false;
@@ -1279,6 +1337,81 @@ public class SaisieLigne extends AppCompatActivity {
         value = value * factor;
         long tmp = Math.round(value);
         return (double) tmp / factor;
+    }
+
+
+    public String parseDate(String date) {
+        if(date.length() != 4 && date.length()!= 6) {
+            return "NULL";
+        }
+        else if (date.length() == 6){
+
+            int date2 = Integer.parseInt(date);
+            int day = date2 / 10000;
+            int month = date2 / 100;
+            month = month % 100;
+
+            String m;
+            if(month > 9) {
+                m = Integer.toString(month);
+            }
+            else {
+                m = "0" + month;
+            }
+
+            int year = date2 - (day * 10000 + month * 100);
+            return day + "/" + m + "/" + year;
+
+        }
+        else {
+
+            int dlc = Integer.parseInt(date);
+
+            Calendar calendar = Calendar.getInstance();
+            int curDay = calendar.get(Calendar.DAY_OF_MONTH);
+            int curYear = calendar.get(Calendar.YEAR) - 2000;
+            int curMonth = calendar.get(Calendar.MONTH);
+
+            int day = dlc / 100;
+            int month = dlc % 100;
+
+            String m;
+            if(month > 9) {
+                m = Integer.toString(month);
+            }
+            else {
+                m = "0" + month;
+            }
+
+            if(month > curMonth) {
+                return day + "/" + m + "/" + curYear;
+            }
+            else if (month < curMonth) {
+                int y = curYear + 1;
+                return day + "/" + m + "/" + y;
+            }
+            else if(month == curMonth && day < curDay) {
+                int y = curYear + 1;
+                return day + "/" + m + "/" + y;
+            }
+            else {
+                return day + "/" + m + "/" + curYear;
+            }
+        }
+    }
+
+    public static boolean isValid(String date) {
+        try {
+            Date simple = new SimpleDateFormat("dd/MM/yy").parse(date);
+            Format format = new SimpleDateFormat("dd/MM/yy");
+
+            if (!date.equals(format.format(simple)))
+                return false;
+
+            return true;
+        } catch(ParseException e) {
+            return false;
+        }
     }
 
 
@@ -1374,6 +1507,7 @@ public class SaisieLigne extends AppCompatActivity {
     }
 
     private void setCreateOrp() {
+
         RequestParams params = Helper.GenerateParams(SaisieLigne.this);
         params.put("Ftgnr",orp.getVente().getCode());
         params.put("Artnr",eArtnr.getText().toString());
@@ -1402,8 +1536,7 @@ public class SaisieLigne extends AppCompatActivity {
     private void setValidVente() {
         // Construction de l'URL
         RequestParams params = Helper.GenerateParams(SaisieLigne.this);
-        params.put("Saljare",Helper.vendeur);
-        params.put("Code",orp.getVente().getCode());
+        params.put("Ordernr",orp.getVente().getOrderNr());
 
         String URL = Helper.GenereateURI(SaisieLigne.this, params, "validvente");
 
@@ -1955,7 +2088,7 @@ public class SaisieLigne extends AppCompatActivity {
             // Ouvre une nouvelle fenetre de vente
             Saisie.activity.finish();
             Intent saisieActivity = new Intent(SaisieLigne.this, Saisie.class);
-            saisieActivity.putExtra("vente", new Vente("","",0.0,0.0,"","",0));
+            saisieActivity.putExtra("vente", new Vente("","",0.0,0.0,"","","0",0));
             startActivity(saisieActivity);
             SaisieLigne.this.finish();
         }
