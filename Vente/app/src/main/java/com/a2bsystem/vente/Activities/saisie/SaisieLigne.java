@@ -1458,7 +1458,6 @@ public class SaisieLigne extends AppCompatActivity {
         }
         String URL = Helper.GenereateURI(SaisieLigne.this, params, "getlots");
 
-        System.out.println(URL);
 
         //Verouillage de l'interface
         lockUI();

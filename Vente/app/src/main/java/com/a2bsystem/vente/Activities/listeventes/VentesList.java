@@ -78,6 +78,7 @@ public class VentesList extends AppCompatActivity {
                             Intent saisieActivity = new Intent(VentesList.this, Saisie.class);
                             saisieActivity.putExtra("vente", new Vente("","",0.0,0.0,"","","0",0));
                             startActivity(saisieActivity);
+                            VentesList.this.finish();
                         }
                         break;
 
@@ -94,6 +95,7 @@ public class VentesList extends AppCompatActivity {
             Intent saisieActivity = new Intent(VentesList.this, Saisie.class);
             saisieActivity.putExtra("vente", new Vente("","",0.0,0.0,"","","0",0));
             startActivity(saisieActivity);
+            VentesList.this.finish();
         }
 
         ListView listView = findViewById(R.id.ventes_listview);

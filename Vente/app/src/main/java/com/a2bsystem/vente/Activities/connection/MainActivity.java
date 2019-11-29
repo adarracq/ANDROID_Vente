@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -70,6 +71,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
+
+                    case R.id.deco_onglet:
+
+                        setDeconnect();
+
+                        break;
+
                     case R.id.config_onglet:
 
                         Intent configActivity = new Intent(MainActivity.this, Config.class);
@@ -78,22 +86,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.connec_onglet:
 
-                        // Save logs
-                        Helper.User = eUser.getText().toString();
-                        Helper.Mdp = eMdp.getText().toString();
-
-                        pbbar.setVisibility(View.VISIBLE);
-
-                        // Construction de l'URL
-                        RequestParams params = Helper.GenerateParams(MainActivity.this);
-                        String URL = Helper.GenereateURI(MainActivity.this, params, "connection");
-
-                        //Verouillage de l'interface
-                        lockUI();
-
-                        // Call API JEE
-                        Connect task = new Connect();
-                        task.execute(new String[] { URL });
+                        setConnect();
 
                         break;
                 }
@@ -128,8 +121,144 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void setDeconnect() {
+        if(!eUser.getText().toString().equalsIgnoreCase("") && !eMdp.getText().toString().equalsIgnoreCase("")){
+
+            Helper.User = eUser.getText().toString();
+            Helper.Mdp = eMdp.getText().toString();
+
+            RequestParams params = Helper.GenerateParams(MainActivity.this);
+            String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+            params.put("PhoneID",android_id);
+
+
+            String URL = Helper.GenereateURI(MainActivity.this, params, "deconnect");
+
+            Deconnect task = new Deconnect();
+            task.execute(new String[] { URL });
+        }
+    }
+
+    private void setConnect() {
+
+        // Save logs
+        Helper.User = eUser.getText().toString();
+        Helper.Mdp = eMdp.getText().toString();
+
+        pbbar.setVisibility(View.VISIBLE);
+
+        // Construction de l'URL
+        RequestParams params = Helper.GenerateParams(MainActivity.this);
+        String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        params.put("PhoneID",android_id);
+        String URL = Helper.GenereateURI(MainActivity.this, params, "connection");
+
+        //Verouillage de l'interface
+        lockUI();
+
+        // Call API JEE
+        Connect task = new Connect();
+        task.execute(new String[] { URL });
+
+    }
+
+
 
     private class Connect extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+            String output = null;
+            for (String url : urls) {
+                output = getOutputFromUrl(url);
+            }
+            return output;
+        }
+
+        private String getOutputFromUrl(String url) {
+            StringBuffer output = new StringBuffer("");
+            try {
+                InputStream stream = getHttpConnection(url);
+                BufferedReader buffer = new BufferedReader(
+                        new InputStreamReader(stream));
+                String s = "";
+                while ((s = buffer.readLine()) != null)
+                    output.append(s);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            return output.toString();
+        }
+
+        // Makes HttpURLConnection and returns InputStream
+        private InputStream getHttpConnection(String urlString)
+                throws IOException {
+            InputStream stream = null;
+            URL url = new URL(urlString);
+            URLConnection connection = url.openConnection();
+
+            try {
+                HttpURLConnection httpConnection = (HttpURLConnection) connection;
+                httpConnection.setRequestMethod("GET");
+                httpConnection.connect();
+
+                if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    stream = httpConnection.getInputStream();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return stream;
+        }
+
+        @Override
+        protected void onPostExecute(String output) {
+            unlockUI();
+            pbbar.setVisibility(View.GONE);
+            if(output.equalsIgnoreCase("-1"))
+            {
+                showError("Identifiants incorrects", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        eUser.setText("");
+                        eMdp.setText("");
+                    }
+                });
+            }
+            else {
+                try {
+
+                    JSONObject jsonObject = new JSONObject(output);
+
+
+                    Helper.paramLot = jsonObject.getInt("ParamLot");
+                    Helper.depot = jsonObject.getString("Depot");
+                    Helper.monoVente = jsonObject.getInt("MonoVente");
+                    Helper.saisiePrix = jsonObject.getInt("SaisiePrix");
+                    Helper.vendeur = jsonObject.getString("Vendeur");
+
+
+                    if(jsonObject.getInt("Connexion") == 1) {
+                        Intent VentesList = new Intent(MainActivity.this, VentesList.class);
+                        startActivity(VentesList);
+                    }
+                    else {
+                        showError("Nombre de licences maximum dépassé", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                    }
+
+
+                } catch (Exception ex) { }
+
+            }
+        }
+    }
+
+
+    private class Deconnect extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
             String output = null;
@@ -191,26 +320,7 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
             else {
-                try {
-
-                    JSONObject jsonObject = new JSONObject(output);
-
-
-                    Helper.paramLot = jsonObject.getInt("ParamLot");
-                    Helper.depot = jsonObject.getString("Depot");
-                    Helper.monoVente = jsonObject.getInt("MonoVente");
-                    Helper.saisiePrix = jsonObject.getInt("SaisiePrix");
-                    Helper.vendeur = jsonObject.getString("Vendeur");
-
-                    System.out.println("aaaaaaaaaaaaaa " + Helper.depot);
-
-
-                } catch (Exception ex) {
-                }
-
-                Intent VentesList = new Intent(MainActivity.this, VentesList.class);
-                startActivity(VentesList);
-
+                MainActivity.this.finish();
             }
         }
     }
