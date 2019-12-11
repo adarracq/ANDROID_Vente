@@ -107,8 +107,6 @@ public class Helper {
         SharedPreferences sharedPreferences = activity.getApplicationContext().getSharedPreferences(Config, 0);
         String URL = sharedPreferences.getString("URL",null);
 
-
-
             return "http://"
                     + URL
                     + "/Vente/"

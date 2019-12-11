@@ -16,12 +16,9 @@ import android.widget.ProgressBar;
 import com.a2bsystem.vente.Activities.config.Config;
 import com.a2bsystem.vente.Activities.listeventes.VentesList;
 import com.a2bsystem.vente.Helper;
-import com.a2bsystem.vente.Models.Vente;
 import com.a2bsystem.vente.R;
-import com.a2bsystem.vente.SQL.ConnectionClass;
 import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -31,7 +28,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     // SQL
-    ConnectionClass connectionClass;
     ProgressBar pbbar;
 
     @Override
@@ -56,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void initFields() {
-        connectionClass = new ConnectionClass();
         bottomNavigationView = findViewById(R.id.bottom_navigation_main);
         eUser = findViewById(R.id.main_user);
         eMdp = findViewById(R.id.main_mdp);

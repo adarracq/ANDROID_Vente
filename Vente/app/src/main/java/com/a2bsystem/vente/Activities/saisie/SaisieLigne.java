@@ -12,14 +12,11 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +24,6 @@ import com.a2bsystem.vente.Helper;
 import com.a2bsystem.vente.Models.Orp;
 import com.a2bsystem.vente.Models.Vente;
 import com.a2bsystem.vente.R;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
@@ -44,11 +40,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.conn.ssl.SSLSocketFactory;
-
-import static java.security.AccessController.getContext;
 
 public class SaisieLigne extends AppCompatActivity {
 
@@ -587,7 +578,7 @@ public class SaisieLigne extends AppCompatActivity {
 
                     switch (orp.getModeSaisie()) {
 
-                        case "Poids net total":
+                        case "poids net total":
                             ePdsNet.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -596,7 +587,7 @@ public class SaisieLigne extends AppCompatActivity {
                             });
                             break;
 
-                        case "Poids brut total":
+                        case "poids brut total":
                             ePdsBrut.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -605,7 +596,7 @@ public class SaisieLigne extends AppCompatActivity {
                             });
                             break;
 
-                        case "NULL":
+                        case "null":
                             ePiecesU.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -614,7 +605,7 @@ public class SaisieLigne extends AppCompatActivity {
                             });
                             break;
 
-                        case "Colis":
+                        case "colis":
                             if(Helper.saisiePrix == 0) {
                                 validOrp();
                             }
@@ -661,7 +652,7 @@ public class SaisieLigne extends AppCompatActivity {
 
                     switch (orp.getModeSaisie()) {
 
-                        case "Poids net total":
+                        case "poids net total":
                             eColis.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -670,7 +661,7 @@ public class SaisieLigne extends AppCompatActivity {
                             });
                             break;
 
-                        case "Poids brut total":
+                        case "poids brut total":
                             eColis.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -679,7 +670,7 @@ public class SaisieLigne extends AppCompatActivity {
                             });
                             break;
 
-                        case "NULL":
+                        case "null":
                             ePieces.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -688,7 +679,7 @@ public class SaisieLigne extends AppCompatActivity {
                             });
                             break;
 
-                        case "Colis":
+                        case "colis":
                             eColis.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -729,7 +720,7 @@ public class SaisieLigne extends AppCompatActivity {
 
                     switch (orp.getModeSaisie()) {
 
-                        case "Poids net total":
+                        case "poids net total":
                             eColis.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -738,7 +729,7 @@ public class SaisieLigne extends AppCompatActivity {
                             });
                             break;
 
-                        case "Poids brut total":
+                        case "poids brut total":
                             eColis.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -747,7 +738,7 @@ public class SaisieLigne extends AppCompatActivity {
                             });
                             break;
 
-                        case "NULL":
+                        case "null":
                             ePdsBrutU.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -756,7 +747,7 @@ public class SaisieLigne extends AppCompatActivity {
                             });
                             break;
 
-                        case "Colis":
+                        case "colis":
                             eColis.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -803,7 +794,7 @@ public class SaisieLigne extends AppCompatActivity {
 
                     switch (orp.getModeSaisie()) {
 
-                        case "Poids net total":
+                        case "poids net total":
                             eColis.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -821,7 +812,7 @@ public class SaisieLigne extends AppCompatActivity {
                             });
                             break;
 
-                        case "NULL":
+                        case "null":
                             ePdsBrut.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -830,7 +821,7 @@ public class SaisieLigne extends AppCompatActivity {
                             });
                             break;
 
-                        case "Colis":
+                        case "colis":
                             eColis.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -872,7 +863,7 @@ public class SaisieLigne extends AppCompatActivity {
 
                     switch (orp.getModeSaisie()) {
 
-                        case "Poids net total":
+                        case "poids net total":
                             eColis.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -881,7 +872,7 @@ public class SaisieLigne extends AppCompatActivity {
                             });
                             break;
 
-                        case "Poids brut total":
+                        case "poids brut total":
                             eTareU.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -890,7 +881,7 @@ public class SaisieLigne extends AppCompatActivity {
                             });
                             break;
 
-                        case "NULL":
+                        case "null":
                             eTareU.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -899,7 +890,7 @@ public class SaisieLigne extends AppCompatActivity {
                             });
                             break;
 
-                        case "Colis":
+                        case "colis":
                             eColis.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -941,7 +932,7 @@ public class SaisieLigne extends AppCompatActivity {
 
                     switch (orp.getModeSaisie()) {
 
-                        case "Poids net total":
+                        case "poids net total":
                             eColis.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -950,7 +941,7 @@ public class SaisieLigne extends AppCompatActivity {
                             });
                             break;
 
-                        case "Poids brut total":
+                        case "poids brut total":
                             if(Helper.saisiePrix == 0) {
                                 validOrp();
                             }
@@ -964,7 +955,7 @@ public class SaisieLigne extends AppCompatActivity {
                             }
                             break;
 
-                        case "NULL":
+                        case "null":
                             eTare.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -973,7 +964,7 @@ public class SaisieLigne extends AppCompatActivity {
                             });
                             break;
 
-                        case "Colis":
+                        case "colis":
                             eColis.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -1015,7 +1006,7 @@ public class SaisieLigne extends AppCompatActivity {
 
                     switch (orp.getModeSaisie()) {
 
-                        case "Poids net total":
+                        case "poids net total":
                             eColis.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -1024,7 +1015,7 @@ public class SaisieLigne extends AppCompatActivity {
                             });
                             break;
 
-                        case "Poids brut total":
+                        case "poids brut total":
                             if(Helper.saisiePrix == 0) {
                                 validOrp();
                             }
@@ -1038,7 +1029,7 @@ public class SaisieLigne extends AppCompatActivity {
                             }
                             break;
 
-                        case "NULL":
+                        case "null":
                             ePdsNetU.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -1047,7 +1038,7 @@ public class SaisieLigne extends AppCompatActivity {
                             });
                             break;
 
-                        case "Colis":
+                        case "colis":
                             break;
 
                         case "pieces totales":
@@ -1083,7 +1074,7 @@ public class SaisieLigne extends AppCompatActivity {
 
                     switch (orp.getModeSaisie()) {
 
-                        case "Poids net total":
+                        case "poids net total":
                             eColis.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -1092,7 +1083,7 @@ public class SaisieLigne extends AppCompatActivity {
                             });
                             break;
 
-                        case "Poids brut total":
+                        case "poids brut total":
                             eColis.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -1101,7 +1092,7 @@ public class SaisieLigne extends AppCompatActivity {
                             });
                             break;
 
-                        case "NULL":
+                        case "null":
                             ePdsNet.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -1110,7 +1101,7 @@ public class SaisieLigne extends AppCompatActivity {
                             });
                             break;
 
-                        case "Colis":
+                        case "colis":
                             eColis.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -1152,7 +1143,7 @@ public class SaisieLigne extends AppCompatActivity {
 
                     switch (orp.getModeSaisie()) {
 
-                        case "Poids net total":
+                        case "poids net total":
 
                             if(orp.getPoidsVar() == 1) {
                                 saisiePoidsVar(ePu);
@@ -1173,7 +1164,7 @@ public class SaisieLigne extends AppCompatActivity {
 
                             break;
 
-                        case "Poids brut total":
+                        case "poids brut total":
                             if(orp.getPoidsVar() == 1) {
                                 saisiePoidsVar(eColis);
                             }
@@ -1187,7 +1178,7 @@ public class SaisieLigne extends AppCompatActivity {
                             }
                             break;
 
-                        case "NULL":
+                        case "null":
                             if(orp.getPoidsVar() == 1) {
                                 saisiePoidsVar(ePu);
                             }
@@ -1206,7 +1197,7 @@ public class SaisieLigne extends AppCompatActivity {
                             }
                             break;
 
-                        case "Colis":
+                        case "colis":
                             if(orp.getPoidsVar() == 1) {
                                 saisiePoidsVar(eColis);
                             }
@@ -1596,7 +1587,6 @@ public class SaisieLigne extends AppCompatActivity {
         @Override
         protected void onPostExecute(String output) {
             unlockUI();
-            System.out.println(output);
             if(output.equalsIgnoreCase("-1"))
             {
                 showError("Impossible de récupérer les champs", new DialogInterface.OnClickListener() {
@@ -1612,7 +1602,7 @@ public class SaisieLigne extends AppCompatActivity {
                     JSONArray jsonArray = new JSONArray(output);
 
                     orp.setLib(jsonArray.getJSONObject(0).getString("Lib").trim());
-                    orp.setModeSaisie(jsonArray.getJSONObject(0).getString("ModeSaisie"));
+                    orp.setModeSaisie(jsonArray.getJSONObject(0).getString("ModeSaisie").toLowerCase());
                     orp.setUniteFact(jsonArray.getJSONObject(0).getString("UniteFact").trim());
                     orp.setPiecesU(jsonArray.getJSONObject(0).getDouble("PieceU"));
                     orp.setPdsBrutU(jsonArray.getJSONObject(0).getDouble("PdsBrutU"));

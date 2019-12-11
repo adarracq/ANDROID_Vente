@@ -41,7 +41,6 @@ public class Config extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottom_navigation_config);
 
-
         sharedPreferences = getBaseContext().getSharedPreferences(Config,MODE_PRIVATE);
 
         //Rempli avec les données existantes
