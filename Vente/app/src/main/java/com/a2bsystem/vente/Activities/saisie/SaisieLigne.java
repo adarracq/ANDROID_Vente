@@ -1461,7 +1461,7 @@ public class SaisieLigne extends AppCompatActivity {
 
     private void setGetArticle() {
         RequestParams params = Helper.GenerateParams(SaisieLigne.this);
-        params.put("field",eArtnr.getText().toString());
+        params.put("field",eArtnr.getText().toString().replace("'","''"));
         params.put("lagstalle",orp.getVente().getDepot());
         String URL = Helper.GenereateURI(SaisieLigne.this, params, "getarticle");
 

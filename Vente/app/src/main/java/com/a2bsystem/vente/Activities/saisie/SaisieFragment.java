@@ -343,7 +343,7 @@ public class SaisieFragment extends Fragment {
     private void setGetClient() {
         // Construction de l'URL
         RequestParams params = Helper.GenerateParams(getActivity());
-        params.put("field", eClient.getText().toString());
+        params.put("field", eClient.getText().toString().replace("'","''"));
         String URL = Helper.GenereateURI(getActivity(), params, "getclients");
 
         //Verouillage de l'interface
