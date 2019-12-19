@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:hint="URL"
             android:layout_marginTop="40dp"
-            android:maxLines="1"
+            android:inputType="text"
             android:imeOptions="actionNext"/>
 
         <EditText
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:hint="BDD"
             android:layout_marginTop="20dp"
-            android:maxLines="1"
+            android:inputType="text"
             android:imeOptions="actionNext"/>
 
         <EditText
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:hint="Code Société"
             android:layout_marginTop="20dp"
-            android:maxLines="1"
+            android:inputType="number"
             android:imeOptions="actionDone"/>
 
 

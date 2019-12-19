@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.a2bsystem.vente.Activities.saisie.Saisie;
+import com.a2bsystem.vente.Adapters.SwipeDismissListViewTouchListener;
 import com.a2bsystem.vente.Adapters.VenteAdapter;
 import com.a2bsystem.vente.Helper;
 import com.a2bsystem.vente.Models.Vente;
@@ -78,7 +79,7 @@ public class VentesList extends AppCompatActivity {
                             Intent saisieActivity = new Intent(VentesList.this, Saisie.class);
                             saisieActivity.putExtra("vente", new Vente("","",0.0,0.0,"","","0",0));
                             startActivity(saisieActivity);
-                            VentesList.this.finish();
+
                         }
                         break;
 
@@ -120,37 +121,23 @@ public class VentesList extends AppCompatActivity {
             }
         });
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-                deleteVente(position);
-                return true;
-            }
-        });
-    }
+        listView.setOnTouchListener(new SwipeDismissListViewTouchListener(
+                listView,
+                new SwipeDismissListViewTouchListener.DismissCallbacks() {
+                    @Override
+                    public boolean canDismiss(int position) {
+                        return true;
+                    }
 
+                    @Override
+                    public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                        for (int position : reverseSortedPositions) {
+                            setDeleteVente(position);
+                        }
 
-    private void deleteVente(final int pos){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Suppression");
-        builder.setMessage("Confirmer la suppression?");
-        builder.setPositiveButton("Non", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        builder.setNegativeButton("Oui", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                //TODO Supprimer la vente
-                ventes.get(pos).setStatut(-1);
-                loadVentes();
-            }
-        });
-        builder.show();
+                    }
+                }));
     }
 
 
@@ -186,6 +173,20 @@ public class VentesList extends AppCompatActivity {
         // Call API JEE
 
         GetVentes task = new GetVentes();
+        task.execute(new String[] { URL });
+    }
+
+    private void setDeleteVente(int position) {
+        RequestParams params = Helper.GenerateParams(VentesList.this);
+        params.put("ordernr",ventes.get(position).getOrderNr());
+        String URL = Helper.GenereateURI(VentesList.this, params, "deletevente");
+
+        //Verouillage de l'interface
+        lockUI();
+
+        // Call API JEE
+
+        DeleteVente task = new DeleteVente();
         task.execute(new String[] { URL });
     }
 
@@ -273,6 +274,73 @@ public class VentesList extends AppCompatActivity {
 
 
                 } catch (Exception ex) {}
+            }
+        }
+    }
+
+
+    private class DeleteVente extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+            String output = null;
+            for (String url : urls) {
+                output = getOutputFromUrl(url);
+            }
+            return output;
+        }
+
+        private String getOutputFromUrl(String url) {
+            StringBuffer output = new StringBuffer("");
+            try {
+                InputStream stream = getHttpConnection(url);
+                BufferedReader buffer = new BufferedReader(
+                        new InputStreamReader(stream));
+                String s = "";
+                while ((s = buffer.readLine()) != null)
+                    output.append(s);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            return output.toString();
+        }
+
+        // Makes HttpURLConnection and returns InputStream
+        private InputStream getHttpConnection(String urlString)
+                throws IOException {
+            InputStream stream = null;
+            URL url = new URL(urlString);
+            URLConnection connection = url.openConnection();
+
+            try {
+                HttpURLConnection httpConnection = (HttpURLConnection) connection;
+                httpConnection.setRequestMethod("GET");
+                httpConnection.connect();
+
+                if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    stream = httpConnection.getInputStream();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return stream;
+        }
+
+        @Override
+        protected void onPostExecute(String output) {
+            unlockUI();
+            System.out.println(output);
+            if(output.equalsIgnoreCase("-1"))
+            {
+                showError("Impossible de supprimer la vente...", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+            }
+            else {
+
+                setGetVentes();
+
             }
         }
     }

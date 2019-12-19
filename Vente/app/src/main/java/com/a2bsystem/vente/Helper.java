@@ -35,57 +35,7 @@ public class Helper {
     public static int saisiePrix;
     public static int monoVente;
 
-    // Certificat SSL sur le serveur web?
-    public static Boolean SSL = true;
 
-
-    // Récupère le statut de la requête
-    public static Boolean GetSuccess(byte[] source) {
-        String s = new String(source);
-        try {
-            return(new JSONObject(s).getInt("status")==100);
-        }catch(JSONException e) {
-            return false;
-        }
-    }
-
-    //Retourne la premiere colonne
-    public static JSONObject GetFirstRow(byte[] source) {
-        return GetRowAt(source, 0);
-    }
-
-    public static JSONArray GetList(byte[] source) {
-        String s = new String(source);
-        try {
-            return new JSONObject(s).getJSONArray("recordsets").getJSONArray(0);
-        } catch (JSONException e) {
-            return null;
-        }
-    }
-
-    // Retourne la colonne x
-    public static JSONObject GetRowAt(byte[] source, int index) {
-        try {
-            return GetList(source).getJSONObject(index);
-        } catch (JSONException e) {
-            return null;
-        }
-    }
-
-    // Retourne le statut de la requête
-    public static int GetStatus(byte[] source)
-    {
-        String s = new String(source);
-
-        try
-        {
-            return new JSONObject(s).getInt("status");
-        }
-        catch(JSONException e)
-        {
-            return 0;
-        }
-    }
 
     // Génère les paramètres de la requêtes depuis la config
     public static RequestParams GenerateParams(Activity activity)
@@ -115,34 +65,4 @@ public class Helper {
                     + params.toString();
     }
 
-
-    public static SSLContext getSslContext() {
-
-        TrustManager[] byPassTrustManagers = new TrustManager[] { new X509TrustManager() {
-            public X509Certificate[] getAcceptedIssuers() {
-                return new X509Certificate[0];
-            }
-
-            public void checkClientTrusted(X509Certificate[] chain, String authType) {
-            }
-
-            public void checkServerTrusted(X509Certificate[] chain, String authType) {
-            }
-        } };
-
-        SSLContext sslContext=null;
-
-        try {
-            sslContext = SSLContext.getInstance("TLS");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        try {
-            sslContext.init(null, byPassTrustManagers, new SecureRandom());
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
-        }
-
-        return sslContext;
-    }
 }
