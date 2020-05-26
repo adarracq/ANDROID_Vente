@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
         eMdp = findViewById(R.id.main_mdp);
         pbbar = findViewById(R.id.pbbar);
         pbbar.setVisibility(View.GONE);
-        eUser.setText("TA");
-        eMdp.setText("ta");
+        eUser.setText("");
+        eMdp.setText("");
     }
 
     public void initListeners() {

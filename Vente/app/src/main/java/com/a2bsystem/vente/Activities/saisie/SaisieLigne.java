@@ -1424,9 +1424,11 @@ public class SaisieLigne extends AppCompatActivity {
         }
 
         params.put("depot",Helper.depot);
+        params.put("ftgnr", orp.getVente().getCode());
+
         String URL = Helper.GenereateURI(SaisieLigne.this, params, "getfields");
 
-        System.out.println(URL);
+        System.out.println("aaaaaaaa " + URL);
 
         //Verouillage de l'interface
         lockUI();
@@ -1462,7 +1464,7 @@ public class SaisieLigne extends AppCompatActivity {
     private void setGetArticle() {
         RequestParams params = Helper.GenerateParams(SaisieLigne.this);
         params.put("field",eArtnr.getText().toString().replace("'","''"));
-        params.put("lagstalle",orp.getVente().getDepot());
+        params.put("lagstalle",Helper.depot);
         String URL = Helper.GenereateURI(SaisieLigne.this, params, "getarticle");
 
         //Verouillage de l'interface
@@ -1510,6 +1512,7 @@ public class SaisieLigne extends AppCompatActivity {
         params.put("DLC",eDLC.getText().toString());
         params.put("Saljare", Helper.vendeur);
         params.put("Lot", eLot.getText().toString());
+        params.put("Depot", Helper.depot);
 
         String URL = Helper.GenereateURI(SaisieLigne.this, params, "createorp");
 

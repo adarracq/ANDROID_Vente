@@ -1,6 +1,7 @@
 package com.a2bsystem.vente.Activities.saisie;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -625,6 +627,14 @@ public class SaisieFragment extends Fragment {
 
 
                 } catch (Exception ex) {}
+            }
+
+            // ouverture clavier
+            vente = (Vente) getArguments().getSerializable("vente");
+            if(vente.getClient().equalsIgnoreCase("")){
+                eClient.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
             }
         }
     }
