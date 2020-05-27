@@ -242,7 +242,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/a2bsystem/vente/Activities/saisie/SaisieLigne.java</url>
-          <line>479</line>
+          <line>499</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>

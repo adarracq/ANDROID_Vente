@@ -229,6 +229,7 @@ public class MainActivity extends AppCompatActivity {
                     Helper.monoVente = jsonObject.getInt("MonoVente");
                     Helper.saisiePrix = jsonObject.getInt("SaisiePrix");
                     Helper.vendeur = jsonObject.getString("Vendeur");
+                    Helper.artOrLot = jsonObject.getInt("ArtOrLot");
 
 
                     if(jsonObject.getInt("Connexion") == 1) {

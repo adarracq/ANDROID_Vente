@@ -157,7 +157,7 @@
                     android:selectAllOnFocus="true"
                     android:paddingLeft="5dp"
                     android:layout_weight="1"
-                    android:inputType="number"/>
+                    android:inputType="text"/>
 
             </LinearLayout>
 
@@ -210,7 +210,7 @@
                     android:selectAllOnFocus="true"
                     android:paddingLeft="5dp"
                     android:layout_weight="1"
-                    android:inputType="number"/>
+                    android:inputType="text"/>
 
             </LinearLayout>
 

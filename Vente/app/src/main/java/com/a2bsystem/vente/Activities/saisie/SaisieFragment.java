@@ -117,12 +117,22 @@ public class SaisieFragment extends Fragment {
 
         setGetOrp();
 
+        // ouverture clavier
+        vente = (Vente) getArguments().getSerializable("vente");
+        if(vente.getClient().equalsIgnoreCase("")){
+            eClient.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        }
+
         return result;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        vente = (Vente) getArguments().getSerializable("vente");
+        System.out.println("sss " + vente.getOrderNr());
         setGetOrp();
     }
 
@@ -222,6 +232,7 @@ public class SaisieFragment extends Fragment {
         vente.setValeur(total.getMontant());
         eValeur.setText(vente.getValeur()+"");
         orps.add(total);
+
     }
 
     public static double round(double value, int places) {
@@ -374,7 +385,12 @@ public class SaisieFragment extends Fragment {
     private void setValidVente() {
         // Construction de l'URL
         RequestParams params = Helper.GenerateParams(getActivity());
-        params.put("Ordernr",vente.getOrderNr());
+        if(orps.size()> 0) {
+            params.put("Ordernr",orps.get(0).getOrdernr());
+        }
+        else {
+            params.put("Ordernr", vente.getOrderNr());
+        }
 
         String URL = Helper.GenereateURI(getActivity(), params, "validvente");
 
@@ -627,14 +643,6 @@ public class SaisieFragment extends Fragment {
 
 
                 } catch (Exception ex) {}
-            }
-
-            // ouverture clavier
-            vente = (Vente) getArguments().getSerializable("vente");
-            if(vente.getClient().equalsIgnoreCase("")){
-                eClient.requestFocus();
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
             }
         }
     }

@@ -163,9 +163,12 @@ public class SaisieLigne extends AppCompatActivity {
                             confirm("La saisie d'une nouvelle vente effacera la saisie en cours.", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-
-                                    // TODO nouvelle vente
-
+                                    // Ouvre une nouvelle fenetre de vente
+                                    Saisie.activity.finish();
+                                    Intent saisieActivity = new Intent(SaisieLigne.this, Saisie.class);
+                                    saisieActivity.putExtra("vente", new Vente("","",0.0,0.0,"","","0",0));
+                                    startActivity(saisieActivity);
+                                    SaisieLigne.this.finish();
                                 }
                             });
                         }
@@ -174,8 +177,9 @@ public class SaisieLigne extends AppCompatActivity {
 
                     case R.id.vente_valid_onglet:
 
-                        setValidVente();
-
+                        //setValidVente();
+                        // MAJ Solpom -> pas de validation a la saisie mais retour a la liste
+                        SaisieLigne.this.finish();
                         break;
                 }
                 return false;
@@ -189,10 +193,26 @@ public class SaisieLigne extends AppCompatActivity {
         {
             eLot.setEnabled(false);
             eLot.setBackgroundResource(R.drawable.border);
-            eArtnr.requestFocus();
         }
-        else {
-            eLot.requestFocus();
+
+        // bon focus et type clavier
+        switch (Helper.artOrLot){
+            case 0:
+                eArtnr.requestFocus();
+                eArtnr.setInputType(InputType.TYPE_CLASS_NUMBER);
+                break;
+            case 1:
+                eArtnr.requestFocus();
+                eArtnr.setInputType(InputType.TYPE_CLASS_TEXT);
+                break;
+            case 2:
+                eLot.requestFocus();
+                eLot.setInputType(InputType.TYPE_CLASS_NUMBER);
+                break;
+            case 3:
+                eLot.requestFocus();
+                eLot.setInputType(InputType.TYPE_CLASS_TEXT);
+                break;
         }
     }
 
@@ -1529,9 +1549,12 @@ public class SaisieLigne extends AppCompatActivity {
     private void setValidVente() {
         // Construction de l'URL
         RequestParams params = Helper.GenerateParams(SaisieLigne.this);
+
         params.put("Ordernr",orp.getVente().getOrderNr());
 
         String URL = Helper.GenereateURI(SaisieLigne.this, params, "validvente");
+
+        System.out.println("ddd " + URL);
 
         //Verouillage de l'interface
         lockUI();
@@ -1937,7 +1960,6 @@ public class SaisieLigne extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String output) {
-            System.out.println(output);
             unlockUI();
             if(output.equalsIgnoreCase("-1"))
             {
@@ -1954,8 +1976,10 @@ public class SaisieLigne extends AppCompatActivity {
 
                     JSONArray jsonArray = new JSONArray(output);
 
-                    eMontant.setText(jsonArray.getJSONObject(0).getString("Montant"));
-                    orp.setMontant(Double.parseDouble(eMontant.getText().toString()));
+                    //eMontant.setText(jsonArray.getJSONObject(0).getString("Montant"));
+                    orp.getVente().setOrderNr(jsonArray.getJSONObject(0).getString("OrderNr"));
+                    System.out.println("aaa " + output);
+                    //orp.setMontant(Double.parseDouble(eMontant.getText().toString()));
 
                 } catch (Exception ex) {}
 

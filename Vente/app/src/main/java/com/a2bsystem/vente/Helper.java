@@ -34,6 +34,7 @@ public class Helper {
     public static String depot;
     public static int saisiePrix;
     public static int monoVente;
+    public static int artOrLot; // 0 = art/num  1 = art/abc    2 = lot/num  3 = lot/abc
 
 
 
