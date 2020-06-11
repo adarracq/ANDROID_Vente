@@ -91,8 +91,8 @@ public class SaisieLigne extends AppCompatActivity {
 
     private void initFields() {
         eClient     = findViewById(R.id.saisie_ligne_client);
-        eSolde       = findViewById(R.id.saisie_ligne_solde);
-        eValeur       = findViewById(R.id.saisie_ligne_valeur);
+        eSolde      = findViewById(R.id.saisie_ligne_solde);
+        eValeur     = findViewById(R.id.saisie_ligne_valeur);
         eArtnr      = findViewById(R.id.saisie_ligne_article);
         tArtnr      = findViewById(R.id.saisie_ligne_tarticle);
         eLib        = findViewById(R.id.saisie_ligne_lib);
@@ -1635,6 +1635,7 @@ public class SaisieLigne extends AppCompatActivity {
                     orp.setTareU(jsonArray.getJSONObject(0).getDouble("TareU"));
                     orp.setPdsNetU(jsonArray.getJSONObject(0).getDouble("PdsNetU"));
                     orp.setPoidsVar(jsonArray.getJSONObject(0).getInt("PoidsVar"));
+                    orp.setPu(jsonArray.getJSONObject(0).getDouble("prix"));
 
                     fillFields();
 

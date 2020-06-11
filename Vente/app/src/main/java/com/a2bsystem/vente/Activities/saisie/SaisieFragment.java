@@ -55,6 +55,8 @@ public class SaisieFragment extends Fragment {
     // Variables
     private String[] Clients;
     private String[] Clients2;
+    private int[] ClientsBloque;
+    private int bloque;
 
 
     private ArrayList<Orp> orps = new ArrayList<>();
@@ -303,10 +305,12 @@ public class SaisieFragment extends Fragment {
                 dialog.dismiss();
 
                 eClient.setText(Clients[which].substring(Clients[which].indexOf(']')+2));
+                /*
                 vente.setCode(Clients[which].substring(1,Clients[which].indexOf(']')));
                 vente.setClient(eClient.getText().toString());
                 eClient.setEnabled(false);
                 eClient.setBackgroundResource(R.drawable.border);
+                */
                 setGetClient();
                 setGetOrp();
             }
@@ -314,6 +318,55 @@ public class SaisieFragment extends Fragment {
         });
 
         b.show();
+    }
+
+    private void manageBlocageClient(final JSONArray jsonArray){
+        switch(bloque) {
+            case 0:
+                try {
+                    eClient.setText(jsonArray.getJSONObject(0).getString("lib"));
+                    vente.setCode(jsonArray.getJSONObject(0).getString("code"));
+                    vente.setClient(jsonArray.getJSONObject(0).getString("lib"));
+                    vente.setSolde(Double.parseDouble(jsonArray.getJSONObject(0).getString("solde")));
+                    vente.setDlc(jsonArray.getJSONObject(0).getString("dlc"));
+                    eSolde.setText(vente.getSolde() + "");
+                    eClient.setEnabled(false);
+                    eClient.setBackgroundResource(R.drawable.border);
+                    setGetOrp();
+                }
+                catch(Exception e){}
+
+                break;
+            case 1:
+                showMessagClient("Attention","Limite crédit bientôt atteinte", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            eClient.setText(jsonArray.getJSONObject(0).getString("lib"));
+                            vente.setCode(jsonArray.getJSONObject(0).getString("code"));
+                            vente.setClient(jsonArray.getJSONObject(0).getString("lib"));
+                            vente.setSolde(Double.parseDouble(jsonArray.getJSONObject(0).getString("solde")));
+                            vente.setDlc(jsonArray.getJSONObject(0).getString("dlc"));
+                            eSolde.setText(vente.getSolde() + "");
+                            eClient.setEnabled(false);
+                            eClient.setBackgroundResource(R.drawable.border);
+                            setGetOrp();
+                        }
+                        catch(Exception e){}
+                    }
+                });
+                break;
+            case 2:
+                showMessagClient("Crédit dépassé","Vente impossible", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        eClient.setText("");
+                        eClient.requestFocus();
+                    }
+                });
+                break;
+
+        }
     }
 
 
@@ -331,6 +384,16 @@ public class SaisieFragment extends Fragment {
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Erreur");
+        builder.setMessage(message);
+        builder.setCancelable(false);
+        builder.setPositiveButton("OK", listener);
+        builder.show();
+    }
+
+    public void showMessagClient(String title, String message, DialogInterface.OnClickListener listener)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(title);
         builder.setMessage(message);
         builder.setCancelable(false);
         builder.setPositiveButton("OK", listener);
@@ -469,41 +532,26 @@ public class SaisieFragment extends Fragment {
                     // Si c'est un code client complet
                     if (jsonArray.getJSONObject(0).getString("exist").equalsIgnoreCase("1")){
 
-                        eClient.setText(jsonArray.getJSONObject(0).getString("lib"));
-                        vente.setCode(jsonArray.getJSONObject(0).getString("code"));
-                        vente.setClient(jsonArray.getJSONObject(0).getString("lib"));
-                        vente.setSolde(Double.parseDouble(jsonArray.getJSONObject(0).getString("solde")));
-                        vente.setDlc(jsonArray.getJSONObject(0).getString("dlc"));
-                        eSolde.setText(vente.getSolde()+"");
-                        eClient.setEnabled(false);
-                        eClient.setBackgroundResource(R.drawable.border);
-                        setGetOrp();
+                        // recupartion blocage client
+                        bloque = jsonArray.getJSONObject(0).getInt("status_encours");
+
+                        manageBlocageClient(jsonArray);
                     }
                     // Si c'est un libelle client complet
                     else if (jsonArray.getJSONObject(0).getString("exist").equalsIgnoreCase("2")){
 
-                        eClient.setText(jsonArray.getJSONObject(0).getString("lib"));
-                        vente.setCode(jsonArray.getJSONObject(0).getString("code"));
-                        vente.setClient(jsonArray.getJSONObject(0).getString("lib"));
-                        vente.setSolde(Double.parseDouble(jsonArray.getJSONObject(0).getString("solde")));
-                        vente.setDlc(jsonArray.getJSONObject(0).getString("dlc"));
-                        eSolde.setText(vente.getSolde()+"");
-                        eClient.setEnabled(false);
-                        eClient.setBackgroundResource(R.drawable.border);
-                        setGetOrp();
+                        // recupartion blocage client
+                        bloque = jsonArray.getJSONObject(0).getInt("status_encours");
+
+                        manageBlocageClient(jsonArray);
                     }
                     // Si il n'y a qu'un seul client correspondant
                     else if (jsonArray.getJSONObject(0).getString("exist").equalsIgnoreCase("3") && jsonArray.length() == 1){
 
-                        eClient.setText(jsonArray.getJSONObject(0).getString("lib"));
-                        vente.setCode(jsonArray.getJSONObject(0).getString("code"));
-                        vente.setClient(jsonArray.getJSONObject(0).getString("lib"));
-                        vente.setSolde(Double.parseDouble(jsonArray.getJSONObject(0).getString("solde")));
-                        vente.setDlc(jsonArray.getJSONObject(0).getString("dlc"));
-                        eSolde.setText(vente.getSolde()+"");
-                        eClient.setEnabled(false);
-                        eClient.setBackgroundResource(R.drawable.border);
-                        setGetOrp();
+                        // recupartion blocage client
+                        bloque = jsonArray.getJSONObject(0).getInt("status_encours");
+
+                        manageBlocageClient(jsonArray);
                     }
                     // Si c'est un morceau de code ou lib client
                     else if (jsonArray.getJSONObject(0).getString("exist").equalsIgnoreCase("3")){
