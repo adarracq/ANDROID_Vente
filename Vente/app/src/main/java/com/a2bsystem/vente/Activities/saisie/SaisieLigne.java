@@ -9,9 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -29,7 +27,6 @@ import com.a2bsystem.vente.R;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -67,8 +64,6 @@ public class SaisieLigne extends AppCompatActivity {
     EditText ePu;
     EditText eMontant;
     EditText eDLC;
-    EditText eDern;
-    EditText ePA;
     BottomNavigationView bottomNavigationView;
     Orp orp = new Orp();
 
@@ -78,11 +73,6 @@ public class SaisieLigne extends AppCompatActivity {
     private String [] Articles;
     private String [] Lots;
     private String [] Lots2;
-    private String [] LotsDLC;
-    private String [] Fournisseurs;
-    private String currentFourni = "";
-
-    boolean scan = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,8 +110,6 @@ public class SaisieLigne extends AppCompatActivity {
         eUnite      = findViewById(R.id.saisie_ligne_u_fact);
         ePu         = findViewById(R.id.saisie_ligne_prix);
         eMontant    = findViewById(R.id.saisie_ligne_montant);
-        eDern       = findViewById(R.id.saisie_ligne_dern_qte);
-        ePA         = findViewById(R.id.saisie_ligne_pa);
         bottomNavigationView = findViewById(R.id.bottom_navigation_saisie_ligne);
         eDLC   = findViewById(R.id.saisie_ligne_DLC);
     }
@@ -190,19 +178,14 @@ public class SaisieLigne extends AppCompatActivity {
                     case R.id.vente_valid_onglet:
 
                         //setValidVente();
-                        // MAJ LPN -> validation de la ligne
-
-                        if(orp.getOrdernr().equalsIgnoreCase("")){
-                            setCreateOrp();
-                        }
-                        else {
-                            setUpdateOrp();
-                        }
+                        // MAJ Solpom -> pas de validation a la saisie mais retour a la liste
+                        SaisieLigne.this.finish();
                         break;
                 }
                 return false;
             }
         });
+
     }
 
     private void manageLot() {
@@ -236,15 +219,7 @@ public class SaisieLigne extends AppCompatActivity {
 
     private void fillFields(){
         eClient.setText(orp.getVente().getClient());
-        if(orp.getVente().getSolde() > 1000) {
-            eSolde.setText(Math.round(orp.getVente().getSolde() / 1000) + " " + Math.round(orp.getVente().getSolde() % 1000));
-        }
-        else if (orp.getVente().getSolde() < -1000){
-            eSolde.setText(Math.round(orp.getVente().getSolde() / 1000) + " " + Math.round(orp.getVente().getSolde() % 1000) * -1);
-        }
-        else {
-            eSolde.setText(orp.getVente().getSolde()+"");
-        }
+        eSolde.setText(orp.getVente().getSolde()+"");
         eValeur.setText(orp.getVente().getValeur()+"");
         eArtnr.setText(orp.getArtnr());
         eLib.setText(orp.getLib());
@@ -268,26 +243,19 @@ public class SaisieLigne extends AppCompatActivity {
         ePu.setText(orp.getPu()+"");
         eMontant.setText(orp.getMontant()+"");
         eDLC.setText(orp.getDLC());
-
-        if(orp.getPu() == 0.0){
-            ePu.setEnabled(true);
-        }
-
     }
 
     private void saveFields(){
-        if(eColis.getText().toString().equalsIgnoreCase(""))
-        {
+        if(eColis.getText().toString().equalsIgnoreCase("")){
             orp.setColis(0.0);
         }
-        else
-        {
+        else {
             orp.setColis(Double.parseDouble(eColis.getText().toString()));
         }
         orp.setPieces(Double.parseDouble(ePieces.getText().toString()));
         orp.setPiecesU(Double.parseDouble(ePiecesU.getText().toString()));
         // Si saisie de plusieurs poids on ne sauvegarde pas chaque poids en poid total
-        try{orp.setPdsNet(Double.parseDouble(ePdsNet.getText().toString()));} catch (Exception e){}
+        orp.setPdsNet(Double.parseDouble(ePdsNet.getText().toString()));
         orp.setPdsNetU(Double.parseDouble(ePdsNetU.getText().toString()));
         orp.setTare(Double.parseDouble(eTare.getText().toString()));
         orp.setTareU(Double.parseDouble(eTareU.getText().toString()));
@@ -328,6 +296,7 @@ public class SaisieLigne extends AppCompatActivity {
 
     public void showPrix(){
         Toast.makeText(getApplicationContext(), "Prix total : " + orp.getPu() * orp.getColis() + " €", Toast.LENGTH_SHORT).show();
+
         /*
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage("Prix total : " + orp.getPu() * orp.getColis() + " €");
@@ -420,36 +389,9 @@ public class SaisieLigne extends AppCompatActivity {
         fillFields();
     }
 
-    private void LockIfDLCsup() {
-        if(Helper.BlocagePUifDLCsup > 0) {
-            Helper.saisiePrix = 0;
-            try {
-                Calendar c = Calendar.getInstance();
-                SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy");
-                c.add(Calendar.DATE, Helper.BlocagePUifDLCsup);
-                String in3days = df.format(c.getTime());
-
-                Date in3d = df.parse(in3days);
-                Date dlc = df.parse(parseDate(orp.getDLC()));
-                if (dlc.after(in3d)) {
-                    ePu.setEnabled(false);
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        else {
-            Helper.saisiePrix = 1;
-        }
-
-    }
-
     private void newOrp(){
         orp =  new Orp(orp.getVente());
         eDLC.setText("");
-        eDern.setText("");
-        ePA.setText("");
-        currentFourni = "";
         fillFields();
         manageLot();
         InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -520,8 +462,6 @@ public class SaisieLigne extends AppCompatActivity {
 
                 orp.setLot(Lots2[which]);
                 eLot.setText(Lots2[which]);
-                orp.setDLC(LotsDLC[which]);
-                eDLC.setText(orp.getDLC());
 
                 setGetFields();
 
@@ -538,14 +478,7 @@ public class SaisieLigne extends AppCompatActivity {
 
         if(poids == orp.getColis()-1)
         {
-            if(ePdsNet.getText().toString().equalsIgnoreCase("")){
-                ePdsNet.setText("0.0");
-            }
-            try {
-                poidTotal = poidTotal +  Double.parseDouble(ePdsNet.getText().toString());
-            }
-            catch (Exception e) {}
-
+            poidTotal = poidTotal +  Double.parseDouble(ePdsNet.getText().toString());
 
             ePdsNet.setText(poidTotal+"");
             showPoids();
@@ -614,8 +547,8 @@ public class SaisieLigne extends AppCompatActivity {
         ePdsNet.setEnabled(false);
         ePdsBrut.setEnabled(false);
         eTare.setEnabled(false);
-        eMontant.setEnabled(false);
         ePu.setEnabled(false);
+        eMontant.setEnabled(false);
         bottomNavigationView.setEnabled(false);
     }
 
@@ -631,8 +564,8 @@ public class SaisieLigne extends AppCompatActivity {
         ePdsNet.setEnabled(true);
         ePdsBrut.setEnabled(true);
         eTare.setEnabled(true);
-        eMontant.setEnabled(true);
         ePu.setEnabled(true);
+        eMontant.setEnabled(true);
         bottomNavigationView.setEnabled(true);
     }
 
@@ -642,17 +575,8 @@ public class SaisieLigne extends AppCompatActivity {
         eArtnr.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-
-                //Si c'est un scan
-                if(eArtnr.getText().toString().length() > 2 &&
-                        (eArtnr.getText().toString().substring(0,3).equalsIgnoreCase("020") || eArtnr.getText().toString().substring(0,3).equalsIgnoreCase("029"))) {
-                    setParseGTIN();
-                }
-                else {
-                    setGetArticle();
-                    eColis.requestFocus();
-                }
-
+                setGetArticle();
+                eColis.requestFocus();
                 return false;
             }
         });
@@ -1502,64 +1426,6 @@ public class SaisieLigne extends AppCompatActivity {
     }
 
 
-    private void selectFournisseurs(final JSONArray jsonArray) {
-
-        ContextThemeWrapper themedContext = new ContextThemeWrapper(SaisieLigne.this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar);
-        AlertDialog.Builder b = new AlertDialog.Builder(themedContext);
-        b.setTitle("Choix du Fournisseur");
-        b.setItems(Fournisseurs, new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                try {
-
-                    currentFourni = jsonArray.getJSONObject(which).getString("Ftgnr").trim();
-
-                    if(!eColis.getText().toString().equalsIgnoreCase("") &&
-                            !jsonArray.getJSONObject(which).getString("Artnr").trim().equalsIgnoreCase(orp.getArtnr())) {
-
-                        confirm("La saisie d'un nouvel article effacera la saisie en cours", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                newOrp();
-                            }
-                        });
-                    }
-                    else {
-                        orp.setLib(jsonArray.getJSONObject(which).getString("Libelle").trim());
-                        orp.setArtnr(jsonArray.getJSONObject(which).getString("Artnr").trim());
-                        orp.setDLC(jsonArray.getJSONObject(which).getString("DLC"));
-                        orp.setPdsNet(orp.getPdsNet() + jsonArray.getJSONObject(which).getDouble("Poids"));
-
-
-                        LockIfDLCsup();
-
-                    }
-
-
-                    if(eColis.getText().toString().equalsIgnoreCase("")) {
-                        orp.setColis(1.0);
-                        fillFields();
-                        setGetFields();
-                    }
-                    else {
-                        orp.setColis(orp.getColis() + 1);
-                    }
-
-                    fillFields();
-
-                }
-                catch (JSONException e){ }
-
-            }
-
-        });
-
-        b.show();
-    }
-
-
     private void setGetFields() {
         RequestParams params = Helper.GenerateParams(SaisieLigne.this);
 
@@ -1582,7 +1448,8 @@ public class SaisieLigne extends AppCompatActivity {
 
         String URL = Helper.GenereateURI(SaisieLigne.this, params, "getfields");
 
-        System.out.println("bbb " + URL);
+        System.out.println("aaaaaaaa " + URL);
+
         //Verouillage de l'interface
         lockUI();
 
@@ -1608,7 +1475,6 @@ public class SaisieLigne extends AppCompatActivity {
         //Verouillage de l'interface
         lockUI();
 
-        System.out.println("ccc " + URL);
         // Call API JEE
 
         GetLot task = new GetLot();
@@ -1621,34 +1487,12 @@ public class SaisieLigne extends AppCompatActivity {
         params.put("lagstalle",Helper.depot);
         String URL = Helper.GenereateURI(SaisieLigne.this, params, "getarticle");
 
-        System.out.println("aaa " + URL);
-
         //Verouillage de l'interface
         lockUI();
 
         // Call API JEE
 
         GetArticle task = new GetArticle();
-        task.execute(new String[] { URL });
-    }
-
-    private void setParseGTIN() {
-
-        scan = true;
-
-        RequestParams params = Helper.GenerateParams(SaisieLigne.this);
-        params.put("scan",eArtnr.getText().toString().substring(0, eArtnr.getText().toString().length() - 1));
-
-        String URL = Helper.GenereateURI(SaisieLigne.this, params, "parsegtin");
-
-        System.out.println(URL);
-
-        //Verouillage de l'interface
-        lockUI();
-
-        // Call API JEE
-
-        ParseGTIN task = new ParseGTIN();
         task.execute(new String[] { URL });
     }
 
@@ -1679,12 +1523,7 @@ public class SaisieLigne extends AppCompatActivity {
         RequestParams params = Helper.GenerateParams(SaisieLigne.this);
         params.put("Ftgnr",orp.getVente().getCode());
         params.put("Artnr",eArtnr.getText().toString());
-        if(eColis.getText().toString().equalsIgnoreCase("")){
-            params.put("ua1","0.0");
-        }
-        else {
-            params.put("ua1",eColis.getText().toString());
-        }
+        params.put("ua1",eColis.getText().toString());
         params.put("ua3",ePieces.getText().toString());
         params.put("ua5",ePdsBrut.getText().toString());
         params.put("ua6",eTare.getText().toString());
@@ -1714,6 +1553,8 @@ public class SaisieLigne extends AppCompatActivity {
         params.put("Ordernr",orp.getVente().getOrderNr());
 
         String URL = Helper.GenereateURI(SaisieLigne.this, params, "validvente");
+
+        System.out.println("ddd " + URL);
 
         //Verouillage de l'interface
         lockUI();
@@ -1796,149 +1637,10 @@ public class SaisieLigne extends AppCompatActivity {
                     orp.setPoidsVar(jsonArray.getJSONObject(0).getInt("PoidsVar"));
                     orp.setPu(jsonArray.getJSONObject(0).getDouble("prix"));
 
-                    eDern.setText(round(jsonArray.getJSONObject(0).getDouble("LastQte"), 2) + "");
-
-                    if(Helper.displayPA == 1) {
-                        ePA.setText(round(jsonArray.getJSONObject(0).getDouble("PA"), 2) + "");
-                    }
-
                     fillFields();
 
                 } catch (Exception ex) {
                     fillFields();
-                }
-            }
-        }
-    }
-
-
-    private class ParseGTIN extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... urls) {
-            String output = null;
-            for (String url : urls) {
-                output = getOutputFromUrl(url);
-            }
-            return output;
-        }
-
-        private String getOutputFromUrl(String url) {
-            StringBuffer output = new StringBuffer("");
-            try {
-                InputStream stream = getHttpConnection(url);
-                BufferedReader buffer = new BufferedReader(
-                        new InputStreamReader(stream));
-                String s = "";
-                while ((s = buffer.readLine()) != null)
-                    output.append(s);
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-            return output.toString();
-        }
-
-        // Makes HttpURLConnection and returns InputStream
-        private InputStream getHttpConnection(String urlString)
-                throws IOException {
-            InputStream stream = null;
-            URL url = new URL(urlString);
-            URLConnection connection = url.openConnection();
-
-            try {
-                HttpURLConnection httpConnection = (HttpURLConnection) connection;
-                httpConnection.setRequestMethod("GET");
-                httpConnection.connect();
-
-                if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                    stream = httpConnection.getInputStream();
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            return stream;
-        }
-
-        @Override
-        protected void onPostExecute(String output) {
-            unlockUI();
-            if(output.equalsIgnoreCase("-1"))
-            {
-                showError("Pas d'article associé à ce couple GTIN...", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        newOrp();
-                    }
-                });
-            }
-            else {
-
-                try {
-
-                    JSONArray jsonArray = new JSONArray(output);
-
-                    if(jsonArray.length() == 0) {
-                        showError("Pas d'article associé à ce code GTIN...", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                newOrp();
-                            }
-                        });
-                    }
-                    else if (jsonArray.length() == 1) {
-
-                        currentFourni = jsonArray.getJSONObject(0).getString("Ftgnr").trim();
-
-                        if(!eColis.getText().toString().equalsIgnoreCase("") &&
-                                !jsonArray.getJSONObject(0).getString("Artnr").trim().equalsIgnoreCase(orp.getArtnr())) {
-
-                            confirm("La saisie d'un nouvel article effacera la saisie en cours", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    newOrp();
-                                }
-                            });
-                        }
-                        else {
-                            orp.setLib(jsonArray.getJSONObject(0).getString("Libelle").trim());
-                            orp.setArtnr(jsonArray.getJSONObject(0).getString("Artnr").trim());
-                            orp.setDLC(jsonArray.getJSONObject(0).getString("DLC"));
-                            orp.setPdsNet(orp.getPdsNet() + jsonArray.getJSONObject(0).getDouble("Poids"));
-
-                            LockIfDLCsup();
-
-                        }
-
-
-                        if(eColis.getText().toString().equalsIgnoreCase("")) {
-                            orp.setColis(1.0);
-                            fillFields();
-                            setGetFields();
-                        }
-                        else {
-                            orp.setColis(orp.getColis() + 1);
-                        }
-
-                        fillFields();
-                    }
-                    else {
-                        Fournisseurs = new String[jsonArray.length()];
-
-                        for(int i=0; i<jsonArray.length();i++)
-                        {
-                            Fournisseurs[i] =  "[" + jsonArray.getJSONObject(i).getString("Ftgnr").trim() + "] " + jsonArray.getJSONObject(i).getString("Ftgnamn").trim();
-                        }
-                        selectFournisseurs(jsonArray);
-                    }
-
-
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    showError("Pas d'article associé à ce code GTIN...", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            newOrp();
-                        }
-                    });
                 }
             }
         }
@@ -2077,16 +1779,7 @@ public class SaisieLigne extends AppCompatActivity {
                         });
                     }
 
-                } catch (Exception ex) {
-                    showError("Article Inconnu", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            newOrp();
-                            InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                        }
-                    });
-                }
+                } catch (Exception ex) {}
 
                 InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
@@ -2165,14 +1858,6 @@ public class SaisieLigne extends AppCompatActivity {
                         orp.setLot(jsonArray.getJSONObject(0).getString("lot"));
                         orp.setArtnr(jsonArray.getJSONObject(0).getString("artnr"));
                         orp.setLib(jsonArray.getJSONObject(0).getString("lib"));
-
-                        if(!jsonArray.getJSONObject(0).getString("DLC").equalsIgnoreCase("")){
-                            String dlc = jsonArray.getJSONObject(0).getString("DLC").substring(0,11);
-                            orp.setDLC(dlc.substring(8,10) + "/" + dlc.substring(5,7) + "/" + dlc.substring(0,4));
-                        }
-
-                        LockIfDLCsup();
-
                         eLot.setText(orp.getLot());
                         eLib.setText(orp.getLib());
                         eArtnr.setText(orp.getArtnr());
@@ -2184,12 +1869,6 @@ public class SaisieLigne extends AppCompatActivity {
                         orp.setLot(jsonArray.getJSONObject(0).getString("lot"));
                         orp.setArtnr(jsonArray.getJSONObject(0).getString("artnr"));
                         orp.setLib(jsonArray.getJSONObject(0).getString("lib"));
-
-                        String dlc = jsonArray.getJSONObject(0).getString("DLC").substring(0,11);
-                        orp.setDLC(dlc.substring(8,10) + "/" + dlc.substring(5,7) + "/" + dlc.substring(0,4));
-
-                        LockIfDLCsup();
-
                         eLot.setText(orp.getLot());
                         eLib.setText(orp.getLib());
                         eArtnr.setText(orp.getArtnr());
@@ -2202,32 +1881,15 @@ public class SaisieLigne extends AppCompatActivity {
 
                         Lots = new String[jsonArray.length()];
                         Lots2 = new String[jsonArray.length()];
-                        LotsDLC = new String[jsonArray.length()];
 
                         for(int i=0; i<jsonArray.length();i++)
                         {
                             Lots2[i] = jsonArray.getJSONObject(i).getString("lot");
-
-                            if(jsonArray.getJSONObject(i).getString("DLC").equalsIgnoreCase("")) {
-                                LotsDLC[i] = "";
-                                Lots[i] = jsonArray.getJSONObject(i).getString("fournisseur").trim()
-                                        + '\n' + "STOCK : "
-                                        + round(Double.parseDouble(jsonArray.getJSONObject(i).getString("stock")), 0)
-                                        + "     " + "PRIX : "
-                                        + round(jsonArray.getJSONObject(i).getDouble("prix"),2) + " €";
-                            }
-                            else {
-                                String dlc = jsonArray.getJSONObject(i).getString("DLC");
-                                LotsDLC[i] = dlc.substring(8,10) + "/" + dlc.substring(5,7) + "/" + dlc.substring(0,4);
-
-                                Lots[i] = jsonArray.getJSONObject(i).getString("fournisseur").trim()
-                                        + '\n' + "STOCK : "
-                                        + round(Double.parseDouble(jsonArray.getJSONObject(i).getString("stock")), 0)
-                                        + "     " + "PRIX : "
-                                        + round(jsonArray.getJSONObject(i).getDouble("prix"),2) + " €"
-                                        + '\n' + "DLC : "
-                                        + dlc.substring(8,10) + "/" + dlc.substring(5,7) + "/" + dlc.substring(0,4);
-                            }
+                            Lots[i] = jsonArray.getJSONObject(i).getString("fournisseur").trim()
+                                    + '\n' + "STOCK : "
+                                    + round(Double.parseDouble(jsonArray.getJSONObject(i).getString("stock")), 0)
+                                    + "     " + "PRIX : "
+                                    + round(jsonArray.getJSONObject(i).getDouble("prix"),2) + " €";
                         }
                         selectLot();
 
@@ -2242,7 +1904,7 @@ public class SaisieLigne extends AppCompatActivity {
                         });
                     }
 
-                } catch (Exception ex) { System.out.println(ex);}
+                } catch (Exception ex) {}
 
                 InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
@@ -2317,6 +1979,7 @@ public class SaisieLigne extends AppCompatActivity {
 
                     //eMontant.setText(jsonArray.getJSONObject(0).getString("Montant"));
                     orp.getVente().setOrderNr(jsonArray.getJSONObject(0).getString("OrderNr"));
+                    System.out.println("aaa " + output);
                     //orp.setMontant(Double.parseDouble(eMontant.getText().toString()));
 
                 } catch (Exception ex) {}
