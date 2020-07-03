@@ -456,12 +456,12 @@
                 <TextView
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:text="Prix"
+                    android:text="DLC"
                     android:textColor="@color/colorAccent"
                     android:textSize="18dp" />
 
                 <EditText
-                    android:id="@+id/saisie_ligne_prix"
+                    android:id="@+id/saisie_ligne_DLC"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -474,18 +474,19 @@
                     android:gravity="right"
                     android:inputType="numberDecimal"/>
 
+
                 <EditText
-                    android:id="@+id/saisie_ligne_u_fact"
+                    android:id="@+id/saisie_ligne_dern_qte"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:imeOptions="actionNext"
-                    android:focusable="false"
-                    android:inputType="numberDecimal"
+                    android:textSize="18dp"
                     android:background="@drawable/border"
+                    android:focusable="false"
                     android:paddingRight="5dp"
                     android:gravity="right"
-                    android:textSize="18dp" />
+                    android:inputType="numberDecimal"/>
+
 
             </LinearLayout>
 
@@ -518,17 +519,18 @@
                     android:inputType="numberDecimal"/>
 
                 <EditText
+                    android:id="@+id/saisie_ligne_u_fact"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:imeOptions="actionNext"
                     android:focusable="false"
-                    android:visibility="invisible"
                     android:inputType="numberDecimal"
-                    android:background="@drawable/white_border"
+                    android:background="@drawable/border"
                     android:paddingRight="5dp"
                     android:gravity="right"
                     android:textSize="18dp" />
+
 
             </LinearLayout>
 
@@ -542,12 +544,12 @@
                 <TextView
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:text="DLC"
+                    android:text="Prix"
                     android:textColor="@color/colorAccent"
                     android:textSize="18dp" />
 
                 <EditText
-                    android:id="@+id/saisie_ligne_DLC"
+                    android:id="@+id/saisie_ligne_prix"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -561,14 +563,14 @@
                     android:inputType="numberDecimal"/>
 
                 <EditText
+                    android:id="@+id/saisie_ligne_pa"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:imeOptions="actionNext"
                     android:focusable="false"
                     android:inputType="numberDecimal"
-                    android:visibility="invisible"
-                    android:background="@drawable/white_border"
+                    android:background="@drawable/border"
                     android:paddingRight="5dp"
                     android:gravity="right"
                     android:textSize="18dp" />
