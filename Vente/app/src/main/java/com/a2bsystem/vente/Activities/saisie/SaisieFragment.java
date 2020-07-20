@@ -134,7 +134,6 @@ public class SaisieFragment extends Fragment {
     public void onResume() {
         super.onResume();
         vente = (Vente) getArguments().getSerializable("vente");
-        System.out.println("sss " + vente.getOrderNr());
         setGetOrp();
     }
 
