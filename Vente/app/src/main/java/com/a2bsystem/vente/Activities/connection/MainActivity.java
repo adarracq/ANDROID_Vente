@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     EditText eMdp;
 
 
-    // SQL
     ProgressBar pbbar;
 
     @Override
@@ -56,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
         eMdp = findViewById(R.id.main_mdp);
         pbbar = findViewById(R.id.pbbar);
         pbbar.setVisibility(View.GONE);
-        eUser.setText("");
-        eMdp.setText("");
+        eUser.setText("acl");
+        eMdp.setText("acl");
     }
 
     public void initListeners() {
@@ -230,6 +229,8 @@ public class MainActivity extends AppCompatActivity {
                     Helper.saisiePrix = jsonObject.getInt("SaisiePrix");
                     Helper.vendeur = jsonObject.getString("Vendeur");
                     Helper.artOrLot = jsonObject.getInt("ArtOrLot");
+                    Helper.displayPA = jsonObject.getInt("DisplayPA");
+                    Helper.BlocagePUifDLCsup = jsonObject.getInt("BlocagePUifDLCsup");
 
 
                     if(jsonObject.getInt("Connexion") == 1) {
