@@ -2067,7 +2067,7 @@ public class SaisieLigne extends AppCompatActivity {
                         selectArticle();
                     }
                     else {
-                        showError("Article Inconnu", new DialogInterface.OnClickListener() {
+                        showError("Pas de stock pour cet article", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 eArtnr.setText("");
@@ -2077,7 +2077,8 @@ public class SaisieLigne extends AppCompatActivity {
                     }
 
                 } catch (Exception ex) {
-                    showError("Article Inconnu", new DialogInterface.OnClickListener() {
+                    ex.printStackTrace();
+                    showError("Pas de stock pour cet article", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             newOrp();
