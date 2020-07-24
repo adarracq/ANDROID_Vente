@@ -1448,6 +1448,8 @@ public class SaisieLigne extends AppCompatActivity {
 
         String URL = Helper.GenereateURI(SaisieLigne.this, params, "getfields");
 
+        System.out.println("aaaaaaaa " + URL);
+
         //Verouillage de l'interface
         lockUI();
 
@@ -1551,6 +1553,8 @@ public class SaisieLigne extends AppCompatActivity {
         params.put("Ordernr",orp.getVente().getOrderNr());
 
         String URL = Helper.GenereateURI(SaisieLigne.this, params, "validvente");
+
+        System.out.println("ddd " + URL);
 
         //Verouillage de l'interface
         lockUI();
@@ -1975,6 +1979,7 @@ public class SaisieLigne extends AppCompatActivity {
 
                     //eMontant.setText(jsonArray.getJSONObject(0).getString("Montant"));
                     orp.getVente().setOrderNr(jsonArray.getJSONObject(0).getString("OrderNr"));
+                    System.out.println("aaa " + output);
                     //orp.setMontant(Double.parseDouble(eMontant.getText().toString()));
 
                 } catch (Exception ex) {}

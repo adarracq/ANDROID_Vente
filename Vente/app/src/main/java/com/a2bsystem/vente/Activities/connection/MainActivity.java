@@ -301,6 +301,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String output) {
+            System.out.println(output);
             unlockUI();
             pbbar.setVisibility(View.GONE);
             if(output.equalsIgnoreCase("-1"))

@@ -241,6 +241,7 @@ public class VentesList extends AppCompatActivity {
         @Override
         protected void onPostExecute(String output) {
             unlockUI();
+            System.out.println(output);
             if(output.equalsIgnoreCase("-1"))
             {
                 showError("Impossible de récupérer les ventes", new DialogInterface.OnClickListener() {
@@ -327,6 +328,7 @@ public class VentesList extends AppCompatActivity {
         @Override
         protected void onPostExecute(String output) {
             unlockUI();
+            System.out.println(output);
             if(output.equalsIgnoreCase("-1"))
             {
                 showError("Impossible de supprimer la vente...", new DialogInterface.OnClickListener() {
