@@ -16,7 +16,7 @@
 
         /*Client*/
         <TextView
-            android:layout_width="55dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:text="Client"
             android:textColor="@color/colorAccent"
@@ -54,7 +54,7 @@
 
             /*Solde*/
             <TextView
-                android:layout_width="55dp"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:text="Solde"
                 android:textColor="@color/colorAccent"
@@ -115,7 +115,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.2"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             /*Valeur*/
@@ -123,7 +123,7 @@
                 android:id="@+id/saisie_page"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1/1"
+                android:text="3/5"
                 android:gravity="end"
                 android:textColor="@color/colorAccent"
                 android:textSize="25dp"

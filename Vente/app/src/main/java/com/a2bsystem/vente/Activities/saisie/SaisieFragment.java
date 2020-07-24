@@ -18,16 +18,12 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.TextView;
 
-import com.a2bsystem.vente.Adapters.FactureAdapter;
 import com.a2bsystem.vente.Adapters.VenteDetailAdapter;
 import com.a2bsystem.vente.Helper;
-import com.a2bsystem.vente.Models.Facture;
 import com.a2bsystem.vente.Models.Orp;
 import com.a2bsystem.vente.Models.Vente;
 import com.a2bsystem.vente.R;
@@ -64,8 +60,6 @@ public class SaisieFragment extends Fragment {
 
 
     private ArrayList<Orp> orps = new ArrayList<>();
-
-    private ArrayList<Facture> factures = new ArrayList<>();
 
 
     public SaisieFragment() { }
@@ -111,15 +105,7 @@ public class SaisieFragment extends Fragment {
             eClient.setText(vente.getClient());
             eClient.setFocusable(false);
             eClient.setBackgroundResource(R.drawable.border);
-            if(vente.getSolde() > 1000) {
-                eSolde.setText(Math.round(vente.getSolde() / 1000) + " " + Math.round(vente.getSolde() % 1000));
-            }
-            else if (vente.getSolde() < -1000){
-                eSolde.setText(Math.round(vente.getSolde() / 1000) + " " + Math.round(vente.getSolde() % 1000) * -1);
-            }
-            else {
-                eSolde.setText(vente.getSolde()+"");
-            }
+            eSolde.setText(vente.getSolde()+"");
             eSolde.setFocusable(false);
             eValeur.setText(vente.getValeur()+"");
             eValeur.setFocusable(false);
@@ -342,19 +328,9 @@ public class SaisieFragment extends Fragment {
                     vente.setClient(jsonArray.getJSONObject(0).getString("lib"));
                     vente.setSolde(Double.parseDouble(jsonArray.getJSONObject(0).getString("solde")));
                     vente.setDlc(jsonArray.getJSONObject(0).getString("dlc"));
-                    if(vente.getSolde() > 1000) {
-                        eSolde.setText(Math.round(vente.getSolde() / 1000) + " " + Math.round(vente.getSolde() % 1000));
-                    }
-                    else if (vente.getSolde() < -1000){
-                        eSolde.setText(Math.round(vente.getSolde() / 1000) + " " + Math.round(vente.getSolde() % 1000) * -1);
-                    }
-                    else {
-                        eSolde.setText(vente.getSolde()+"");
-                    }
-
+                    eSolde.setText(vente.getSolde() + "");
                     eClient.setEnabled(false);
                     eClient.setBackgroundResource(R.drawable.border);
-                    setGetFactImpayes();
                     setGetOrp();
                 }
                 catch(Exception e){}
@@ -370,16 +346,9 @@ public class SaisieFragment extends Fragment {
                             vente.setClient(jsonArray.getJSONObject(0).getString("lib"));
                             vente.setSolde(Double.parseDouble(jsonArray.getJSONObject(0).getString("solde")));
                             vente.setDlc(jsonArray.getJSONObject(0).getString("dlc"));
-                            if(vente.getSolde() > 1000) {
-                                eSolde.setText(Math.round(vente.getSolde() / 1000) + " " + Math.round(vente.getSolde() % 1000));
-                            }
-                            else {
-                                eSolde.setText(vente.getSolde()+"");
-                            }
-
+                            eSolde.setText(vente.getSolde() + "");
                             eClient.setEnabled(false);
                             eClient.setBackgroundResource(R.drawable.border);
-                            setGetFactImpayes();
                             setGetOrp();
                         }
                         catch(Exception e){}
@@ -390,72 +359,14 @@ public class SaisieFragment extends Fragment {
                 showMessagClient("Crédit dépassé","Vente impossible", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         eClient.setText("");
                         eClient.requestFocus();
-                        setGetFactImpayes();
                     }
                 });
                 break;
 
         }
     }
-
-    public String getDate(String date){
-        return date.substring(8,10) + "/" + date.substring(5,7) + "/" + date.substring(0,4);
-    }
-
-    public void showFact()
-    {
-        ContextThemeWrapper themedContext = new ContextThemeWrapper(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar);
-        AlertDialog.Builder builderSingle = new AlertDialog.Builder(themedContext);
-        builderSingle.setTitle("Factures impayées");
-/*
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.select_dialog_singlechoice);
-        for(int i = 0; i < factures.size(); i++){
-            arrayAdapter.add(getDate(factures.get(i).getDateEch())+ " " + factures.get(i).getMntFact().substring(0,factures.get(i).getMntFact().length() -2) + "€");
-        }*/
-
-        final FactureAdapter factureAdapter = new FactureAdapter(getActivity(), R.layout.facture_lines, factures);
-
-        builderSingle.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        builderSingle.setAdapter(factureAdapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String strName = "Facture du     " + factures.get(which).getDateFact() + '\n' +
-                                 "Echeance au " + factures.get(which).getDateEch() + '\n' + '\n' +
-                                 //"Montant :        " +  factures.get(which).getMntFact() + "€" + '\n' +
-                                 //"Restant  :        " +  factures.get(which).getMntRest() + "€";
-                                "Montant/Restant " +  factures.get(which).getMntRest() + "€/" + factures.get(which).getMntFact() + "€";
-
-
-                ContextThemeWrapper themedContext = new ContextThemeWrapper(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar);
-                AlertDialog.Builder builderInner = new AlertDialog.Builder(themedContext);
-                builderInner.setMessage(strName);
-                builderInner.setTitle("Numéro de Facture : " + factures.get(which).getNumFact());
-
-
-
-                builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog,int which) {
-                        showFact();
-                    }
-                });
-                builderInner.show();
-
-
-            }
-        });
-        builderSingle.show();
-    }
-
 
 
     private void lockUI()
@@ -515,22 +426,6 @@ public class SaisieFragment extends Fragment {
 
         // Call API JEE
         GetClients task = new GetClients();
-        task.execute(new String[] { URL });
-    }
-
-    private void setGetFactImpayes() {
-        // Construction de l'URL
-        RequestParams params = Helper.GenerateParams(getActivity());
-        params.put("Ftgnr", vente.getCode());
-        params.put("Blocage", bloque);
-        String URL = Helper.GenereateURI(getActivity(), params, "getfactimpayes");
-
-        System.out.println(URL);
-        //Verouillage de l'interface
-        lockUI();
-
-        // Call API JEE
-        GetFactImpayes task = new GetFactImpayes();
         task.execute(new String[] { URL });
     }
 
@@ -628,6 +523,8 @@ public class SaisieFragment extends Fragment {
                 });
             }
             else {
+
+
                 try {
                     JSONArray jsonArray = new JSONArray(output);
 
@@ -638,7 +535,6 @@ public class SaisieFragment extends Fragment {
                         bloque = jsonArray.getJSONObject(0).getInt("status_encours");
 
                         manageBlocageClient(jsonArray);
-
                     }
                     // Si c'est un libelle client complet
                     else if (jsonArray.getJSONObject(0).getString("exist").equalsIgnoreCase("2")){
@@ -907,97 +803,6 @@ public class SaisieFragment extends Fragment {
             saisieActivity.putExtra("vente", new Vente("","",0.0,0.0,"","","0",0));
             startActivity(saisieActivity);
             getActivity().finish();
-        }
-    }
-
-
-    private class GetFactImpayes extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... urls) {
-            String output = null;
-            for (String url : urls) {
-                output = getOutputFromUrl(url);
-            }
-            return output;
-        }
-
-        private String getOutputFromUrl(String url) {
-            StringBuffer output = new StringBuffer("");
-            try {
-                InputStream stream = getHttpConnection(url);
-                BufferedReader buffer = new BufferedReader(
-                        new InputStreamReader(stream));
-                String s = "";
-                while ((s = buffer.readLine()) != null)
-                    output.append(s);
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-            return output.toString();
-        }
-
-        // Makes HttpURLConnection and returns InputStream
-        private InputStream getHttpConnection(String urlString)
-                throws IOException {
-            InputStream stream = null;
-            URL url = new URL(urlString);
-            URLConnection connection = url.openConnection();
-
-            try {
-                HttpURLConnection httpConnection = (HttpURLConnection) connection;
-                httpConnection.setRequestMethod("GET");
-                httpConnection.connect();
-
-                if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                    stream = httpConnection.getInputStream();
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            return stream;
-        }
-
-        @Override
-        protected void onPostExecute(String output) {
-            unlockUI();
-            if(output.equalsIgnoreCase("-1"))
-            {
-                showError("Impossible de récupérer les factures impayées", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-            }
-            else {
-
-                try {
-
-                    JSONArray jsonArray = new JSONArray(output);
-                    factures = new ArrayList<>();
-
-                    if(jsonArray.length() > 0) {
-                        for(int i = 0 ; i<jsonArray.length() ; i++){
-
-                            factures.add(new Facture(
-                                    getDate(jsonArray.getJSONObject(i).getString("DteFact")),
-                                    getDate(jsonArray.getJSONObject(i).getString("DteEch")),
-                                    jsonArray.getJSONObject(i).getString("NumFact"),
-                                    jsonArray.getJSONObject(i).getString("MntFact").substring(0, jsonArray.getJSONObject(i).getString("MntFact").length() -2),
-                                    jsonArray.getJSONObject(i).getString("MntRest").substring(0, jsonArray.getJSONObject(i).getString("MntRest").length() -2),
-                                    jsonArray.getJSONObject(i).getInt("Color")
-                            ));
-                        }
-                        showFact();
-                    }
-
-                } catch (Exception ex) {
-                    showError("Impossible de récupérer les factures impayées", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    });
-                }
-            }
         }
     }
 
